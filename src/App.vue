@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <transition name="fade" mode="out-in">
     <router-view/>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -10,15 +10,23 @@
   }
 </script>
 
-<style lang="stylus">
-  body, html {
-    height: 100%;
-    width: 100%
+<style lang="scss">
+  html, body {
     margin: 0;
+    height: 100%;
+    min-width: 1000px;
   }
 
-  #app {
-    height: 100%;
-    width: 100%
+  /* 隐藏滚动条(IE无效) */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .25s;
+  }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
   }
 </style>
