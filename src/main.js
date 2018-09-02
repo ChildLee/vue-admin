@@ -9,11 +9,16 @@ import {
   Button,
   Col,
   Container,
+  Dialog,
+  Form,
+  FormItem,
   Header,
+  Input,
   Main,
   Menu,
   MenuItem,
   MenuItemGroup,
+  Pagination,
   Row,
   Submenu,
   Table,
@@ -28,11 +33,16 @@ Vue.use(Aside)
 Vue.use(Button)
 Vue.use(Col)
 Vue.use(Container)
+Vue.use(Dialog)
+Vue.use(Form)
+Vue.use(FormItem)
 Vue.use(Header)
+Vue.use(Input)
 Vue.use(Main)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
+Vue.use(Pagination)
 Vue.use(Row)
 Vue.use(Submenu)
 Vue.use(Table)

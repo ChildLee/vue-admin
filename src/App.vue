@@ -14,7 +14,7 @@
   html, body {
     margin: 0;
     height: 100%;
-    min-width: 1000px;
+    min-width: 1200px;
   }
 
   /* 隐藏滚动条(IE无效) */
