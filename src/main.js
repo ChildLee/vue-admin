@@ -7,6 +7,8 @@ import dateformat from 'dateformat'
 import {
   Aside,
   Button,
+  Checkbox,
+  CheckboxGroup,
   Col,
   Container,
   Dialog,
@@ -31,6 +33,8 @@ Vue.prototype.dateformat = dateformat
 
 Vue.use(Aside)
 Vue.use(Button)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
 Vue.use(Col)
 Vue.use(Container)
 Vue.use(Dialog)
