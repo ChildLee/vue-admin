@@ -1,5 +1,7 @@
 <template>
-  <el-tree :data="accessList" :props="param"></el-tree>
+  <section>
+    <el-tree :data="accessList" :props="param"></el-tree>
+  </section>
 </template>
 
 <script>

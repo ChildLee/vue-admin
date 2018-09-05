@@ -3,25 +3,23 @@
     <el-aside>
 
       <!--导航-->
-      <el-menu default-active="/home"
-               :router="true"
+      <el-menu :router="true"
+               :collapse="isCollapse"
+               :default-active="currentRoute"
                background-color="#545c64"
                text-color="#fff"
-               active-text-color="#ffd04b"
-               :collapse="isCollapse">
+               active-text-color="#ffd04b">
 
         <template v-for="item in menuList">
 
-          <!--type为0直接生成根菜单-->
-          <template v-if="item.type===0" v-for="access in item.accesses">
+          <template v-if="item.accesses.length===1">
             <!--主菜单-->
-            <el-menu-item :index="access.url">
+            <el-menu-item :index="item.accesses[0].url">
               <i class="el-icon-menu"></i>
-              <span slot="title">{{access.name}}</span>
+              <span slot="title">{{item.accesses[0].name}}</span>
             </el-menu-item>
           </template>
 
-          <!--type不为0的生成子菜单访问-->
           <template v-else>
             <!--子菜单-->
             <el-submenu :index="String(item.id)">
@@ -65,6 +63,8 @@
     name: 'index',
     data() {
       return {
+        // 当前路由
+        currentRoute: '',
         // 菜单列表
         menuList: [{accesses: []}],
         // 是否折叠菜单
@@ -72,6 +72,8 @@
       }
     },
     async mounted() {
+      // 设置菜单默认路由
+      this.currentRoute = this.$route.path
       //初始化菜单
       await this.api.admin.getMenu().then(res => {
         if (res.code === 0) {
