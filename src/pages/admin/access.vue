@@ -6,20 +6,24 @@
       <el-table-column header-align="center" label="权限">
         <template slot-scope="scope">
 
-          <el-checkbox :indeterminate="isIndeterminate" @change="checked=>handleCheckAllChange(checked,scope.row)"
-                       v-model="scope.row.checkAll">
-            全选
-          </el-checkbox>
+          <div class="access-list">
 
-          <el-checkbox-group v-model="checkList" @change="item=>handleCheckedCitiesChange(item,scope.row)">
+            <el-checkbox class="item-all" v-model="scope.row.checkAll"
+                         :indeterminate="scope.row.isIndeterminate"
+                         @change="checked=>checkAllChange(checked,scope.row)">全选
+            </el-checkbox>
 
-            <template v-for="item in scope.row.accesses">
-              <el-checkbox :label="item">
-                {{item.name}}
-              </el-checkbox>
-            </template>
+            <el-checkbox-group v-model="checkList">
 
-          </el-checkbox-group>
+              <template v-for="item in scope.row.accesses">
+                <el-checkbox :label="item.id" @change="checked=>checkChange(checked,scope.row)">
+                  {{item.name}}
+                </el-checkbox>
+              </template>
+
+            </el-checkbox-group>
+
+          </div>
 
         </template>
       </el-table-column>
@@ -33,11 +37,9 @@
     data() {
       return {
         // 权限列表
-        accessList: [],
-        // 存放选中的选项
-        checkList: [],
-        checkAll: false,
-        isIndeterminate: false
+        accessList: [{checkAll: false, isIndeterminate: false}],
+        // 存放选中的权限
+        checkList: []
       }
     },
     mounted() {
@@ -48,38 +50,51 @@
       })
     },
     methods: {
-      // 全选
-      handleCheckAllChange(check, row) {
-        if (check) {
-          this.checkList.push(...row.accesses)
-        } else {
-          for (let i = 0; i < row.accesses.length; i++) {
-            const index = this.checkList.indexOf(row.accesses[i])
-            if (index !== -1) {
-              this.checkList.splice(index, 1)
-            }
+      // 权限全选
+      checkAllChange(check, row) {
+        for (let i = 0; i < row.accesses.length; i++) {
+          const index = this.checkList.indexOf(row.accesses[i].id)
+          if (check && index === -1) {
+            this.checkList.push(row.accesses[i].id)
+            row.checkAll = true
+            row.isIndeterminate = false
+          } else if (!check && index !== -1) {
+            this.checkList.splice(index, 1)
+            row.checkAll = false
+            row.isIndeterminate = false
           }
         }
       },
-      // 单选
-      handleCheckedCitiesChange(item, row) {
-        console.log(this.checkList)
-        console.log(item)
-        console.log(row)
-        // if (check) {
-        //   this.checkList.push(item)
-        // } else {
-        //   row.checkAll = false
-        //   const index = this.checkList.indexOf(item)
-        //   if (index !== -1) {
-        //     this.checkList.splice(index, 1)
-        //   }
-        // }
+      // 权限单选
+      checkChange(check, row) {
+        let count = 0
+        const len = row.accesses.length
+        for (let i = 0; i < len; i++) {
+          const index = this.checkList.indexOf(row.accesses[i].id)
+          if (index !== -1) {
+            ++count
+          }
+        }
+        if (count === 0) {
+          row.checkAll = false
+          row.isIndeterminate = false
+        } else if (count === len) {
+          row.checkAll = true
+          row.isIndeterminate = false
+        } else {
+          row.checkAll = false
+          row.isIndeterminate = true
+        }
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .access-list {
+    display: flex;
+    .item-all {
+      margin-right: 30px;
+    }
+  }
 </style>

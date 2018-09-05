@@ -10,7 +10,7 @@
       <el-table-column align="center" prop="updatedAt" label="更新时间"></el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="">权限</el-button>
+          <el-button size="mini" type="primary" @click="addAccessDialog(scope.row)">权限</el-button>
           <el-button size="mini" @click="updateRoleDialog(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="delRoleDialog(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -27,7 +27,7 @@
     </el-pagination>
 
     <!--添加角色对话框-->
-    <el-dialog title="添加角色" width="500px" :visible.sync="dialog.addRoleShow">
+    <el-dialog title="添加角色" width="500px" center :visible.sync="dialog.addRoleShow">
       <el-form ref="addRoleForm" :model="roleForm" :rules="rules" label-position="left" label-width="80px">
         <el-form-item label="角色名" prop="name">
           <el-input placeholder="请输入角色名" autofocus v-model="roleForm.name"></el-input>
@@ -49,7 +49,7 @@
     </el-dialog>
 
     <!--修改角色对话框-->
-    <el-dialog title="修改角色" width="500px" :visible.sync="dialog.updateRoleShow">
+    <el-dialog title="修改角色" width="500px" center :visible.sync="dialog.updateRoleShow">
       <el-form ref="updateRoleForm" :model="roleForm" :rules="rules" label-position="left"
                label-width="80px">
         <el-form-item label="角色名" prop="name">
@@ -59,6 +59,35 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="resetForm('updateRoleForm')">取 消</el-button>
         <el-button type="primary" @click="updateRole('updateRoleForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--修改权限对话框-->
+    <el-dialog title="权限列表" width="1000px" center :visible.sync="dialog.accessShow">
+      <el-table :data="accessList" border>
+        <el-table-column align="center" type="index" width="50"></el-table-column>
+        <el-table-column align="center" prop="name" label="菜单" width="200"></el-table-column>
+        <el-table-column header-align="center" label="权限">
+          <template slot-scope="scope">
+            <div class="access-list">
+              <el-checkbox class="item-all" v-model="scope.row.checkAll"
+                           :indeterminate="scope.row.isIndeterminate"
+                           @change="checked=>checkAllChange(checked,scope.row)">全选
+              </el-checkbox>
+              <el-checkbox-group v-model="checkList">
+                <template v-for="item in scope.row.accesses">
+                  <el-checkbox :label="item.id" @change="checked=>checkChange(checked,scope.row)">
+                    {{item.name}}
+                  </el-checkbox>
+                </template>
+              </el-checkbox-group>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialog.accessShow = false">取 消</el-button>
+        <el-button type="primary" @click="addAccess">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -73,13 +102,19 @@
       return {
         // 角色列表
         roleList: [],
+        // 权限列表
+        accessList: [{checkAll: false, isIndeterminate: false}],
+        // 存放选中的权限
+        checkList: [],
         dialog: {
           // 添加对话框
           addRoleShow: false,
           // 删除对话框
           delRoleShow: false,
           // 修改对话框
-          updateRoleShow: false
+          updateRoleShow: false,
+          // 权限对话框
+          accessShow: false
         },
         current: {
           // 删除角色下标
@@ -89,7 +124,8 @@
           // 修改角色下标
           updateRoleIndex: 0,
           // 修改角色项
-          updateRoleRow: {}
+          updateRoleRow: {},
+          accessRow: {}
         },
         // 输入的角色名
         roleForm: {
@@ -115,6 +151,7 @@
     },
     mounted() {
       this.getRole()
+      this.getAccess()
     },
     methods: {
       // 重置表单
@@ -133,12 +170,21 @@
           }
         })
       },
+      // 查询权限
+      getAccess() {
+        this.api.admin.getAccess().then(res => {
+          if (res.code === 0) {
+            this.accessList = res.data
+          }
+        })
+      },
       // 添加角色
       addRole(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.api.admin.addRole({name: this.roleForm.name}).then(res => {
               if (res.code === 0) {
+                ++this.total
                 this.$refs[formName].resetFields()
                 this.dialog.addRoleShow = false
                 this.roleList.push(res.data)
@@ -188,6 +234,51 @@
           }
         })
       },
+      // 添加权限弹窗
+      addAccessDialog(row) {
+        this.current.accessRow = row
+        this.dialog.accessShow = true
+      },
+      // 添加权限
+      addAccess() {
+        console.log(666)
+      },
+      // 权限全选
+      checkAllChange(check, row) {
+        for (let i = 0; i < row.accesses.length; i++) {
+          const index = this.checkList.indexOf(row.accesses[i].id)
+          if (check && index === -1) {
+            this.checkList.push(row.accesses[i].id)
+            row.checkAll = true
+            row.isIndeterminate = false
+          } else if (!check && index !== -1) {
+            this.checkList.splice(index, 1)
+            row.checkAll = false
+            row.isIndeterminate = false
+          }
+        }
+      },
+      // 权限单选
+      checkChange(check, row) {
+        let count = 0
+        const len = row.accesses.length
+        for (let i = 0; i < len; i++) {
+          const index = this.checkList.indexOf(row.accesses[i].id)
+          if (index !== -1) {
+            ++count
+          }
+        }
+        if (count === 0) {
+          row.checkAll = false
+          row.isIndeterminate = false
+        } else if (count === len) {
+          row.checkAll = true
+          row.isIndeterminate = false
+        } else {
+          row.checkAll = false
+          row.isIndeterminate = true
+        }
+      },
       // 分页每页条数
       handleSizeChange(limit) {
         this.limit = limit
@@ -212,5 +303,21 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+  }
+
+  .el-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    .el-checkbox {
+      margin-left: 0;
+      margin-right: 20px;
+    }
+  }
+
+  .access-list {
+    display: flex;
+    .item-all {
+      margin-right: 20px;
+    }
   }
 </style>
