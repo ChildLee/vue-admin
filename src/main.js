@@ -16,10 +16,14 @@ import {
   FormItem,
   Header,
   Input,
+  Loading,
   Main,
   Menu,
   MenuItem,
   MenuItemGroup,
+  Message,
+  MessageBox,
+  Notification,
   Pagination,
   Row,
   Submenu,
@@ -30,6 +34,14 @@ import {
 
 Vue.prototype.api = api
 Vue.prototype.dateformat = dateformat
+
+Vue.prototype.$loading = Loading.service
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt
+Vue.prototype.$notify = Notification
+Vue.prototype.$message = Message
 
 Vue.use(Aside)
 Vue.use(Button)
@@ -42,6 +54,7 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Header)
 Vue.use(Input)
+Vue.use(Loading)
 Vue.use(Main)
 Vue.use(Menu)
 Vue.use(MenuItem)

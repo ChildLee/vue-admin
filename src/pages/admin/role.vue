@@ -4,8 +4,8 @@
     <el-button @click="dialog.addRoleShow = true">添加角色</el-button>
 
     <el-table :data="roleList">
-      <el-table-column align="center" prop="id" label="ID" width="180"></el-table-column>
-      <el-table-column align="center" prop="name" label="姓名" width="180"></el-table-column>
+      <el-table-column align="center" type="index" width="50"></el-table-column>
+      <el-table-column align="center" prop="name" label="角色名"></el-table-column>
       <el-table-column align="center" prop="createdAt" label="创建时间"></el-table-column>
       <el-table-column align="center" prop="updatedAt" label="更新时间"></el-table-column>
       <el-table-column align="center" label="操作">
@@ -27,10 +27,12 @@
     </el-pagination>
 
     <!--添加角色对话框-->
-    <el-dialog title="添加角色" width="500px" center :visible.sync="dialog.addRoleShow">
+    <el-dialog title="添加角色" width="500px" center
+               :before-close="done=>resetForm('addRoleForm',done)"
+               :visible.sync="dialog.addRoleShow">
       <el-form ref="addRoleForm" :model="roleForm" :rules="rules" label-position="left" label-width="80px">
         <el-form-item label="角色名" prop="name">
-          <el-input placeholder="请输入角色名" autofocus v-model="roleForm.name"></el-input>
+          <el-input placeholder="请输入角色名" v-model="roleForm.name"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -39,21 +41,14 @@
       </div>
     </el-dialog>
 
-    <!--删除角色对话框-->
-    <el-dialog title="提示" width="400px" center :visible.sync="dialog.delRoleShow">
-      <div class="dialog-content">{{`是否删除${current.delRoleRow.name}`}}</div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialog.delRoleShow = false">取 消</el-button>
-        <el-button type="primary" @click="delRole">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <!--修改角色对话框-->
-    <el-dialog title="修改角色" width="500px" center :visible.sync="dialog.updateRoleShow">
+    <!--编辑角色对话框-->
+    <el-dialog title="修改角色" width="500px" center
+               :before-close="done=>resetForm('updateRoleForm',done)"
+               :visible.sync="dialog.updateRoleShow">
       <el-form ref="updateRoleForm" :model="roleForm" :rules="rules" label-position="left"
                label-width="80px">
         <el-form-item label="角色名" prop="name">
-          <el-input placeholder="请输入角色名" autofocus v-model="roleForm.name"></el-input>
+          <el-input placeholder="请输入角色名" v-model="roleForm.name"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -63,7 +58,7 @@
     </el-dialog>
 
     <!--修改权限对话框-->
-    <el-dialog title="权限列表" width="1000px" center :visible.sync="dialog.accessShow">
+    <el-dialog :title="`${current.accessRow.name}-权限列表`" width="1000px" center :visible.sync="dialog.accessShow">
       <el-table :data="accessList" border>
         <el-table-column align="center" type="index" width="50"></el-table-column>
         <el-table-column align="center" prop="name" label="菜单" width="200"></el-table-column>
@@ -87,7 +82,7 @@
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialog.accessShow = false">取 消</el-button>
-        <el-button type="primary" @click="addAccess">确 定</el-button>
+        <el-button type="primary" @click="roleAddAccess">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -109,8 +104,6 @@
         dialog: {
           // 添加对话框
           addRoleShow: false,
-          // 删除对话框
-          delRoleShow: false,
           // 修改对话框
           updateRoleShow: false,
           // 权限对话框
@@ -155,7 +148,8 @@
     },
     methods: {
       // 重置表单
-      resetForm(formName) {
+      resetForm(formName, done) {
+        if (done) done()
         this.dialog.addRoleShow = false
         this.dialog.updateRoleShow = false
         this.$refs[formName].resetFields()
@@ -195,25 +189,25 @@
       },
       // 删除角色弹窗
       delRoleDialog(index, row) {
-        this.current.delRoleIndex = index
-        this.current.delRoleRow = row
-        this.dialog.delRoleShow = true
-      },
-      // 删除角色确定
-      delRole() {
-        this.api.admin.delRole({id: this.current.delRoleRow.id}).then(res => {
-          if (res.code === 0) {
-            this.roleList.splice(this.current.delRoleIndex, 1)
-            this.dialog.delRoleShow = false
-          }
+        this.$confirm(`是否删除${row.name}`, '提示', {
+          center: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.api.admin.delRole({id: row.id}).then(res => {
+            if (res.code === 0) {
+              this.roleList.splice(index, 1)
+              this.$message({message: `删除${row.name}成功!`, type: 'success'})
+            }
+          })
         })
       },
       // 修改角色弹窗
       updateRoleDialog(index, row) {
+        this.dialog.updateRoleShow = true
         this.current.updateRoleIndex = index
         this.current.updateRoleRow = row
         this.roleForm.name = row.name
-        this.dialog.updateRoleShow = true
       },
       // 修改角色确定
       updateRole(formName) {
@@ -229,6 +223,7 @@
                 this.dialog.updateRoleShow = false
                 this.$refs[formName].resetFields()
                 this.roleForm.name = ''
+                this.$message({message: '修改成功!', type: 'success'})
               }
             })
           }
@@ -237,24 +232,59 @@
       // 添加权限弹窗
       addAccessDialog(row) {
         this.current.accessRow = row
-        this.dialog.accessShow = true
+        // 查询角色已有权限
+        this.api.admin.getRoleAccess({role_id: row.id}).then(res => {
+          if (res.code === 0) {
+            this.checkList = res.data
+            for (let i = 0; i < this.accessList.length; i++) {
+              const accesses = this.accessList[i].accesses
+              let count = 0
+              // 循环判断该菜单里面有几个权限选中
+              for (let j = 0; j < accesses.length; j++) {
+                const index = this.checkList.indexOf(accesses[j].id)
+                if (index !== -1) {
+                  ++count
+                }
+              }
+              // 根据选中权限的数量给出相应的样式展示
+              if (count === 0) {
+                this.accessList[i].checkAll = false
+                this.accessList[i].isIndeterminate = false
+              } else if (count === accesses.length) {
+                this.accessList[i].checkAll = true
+                this.accessList[i].isIndeterminate = false
+              } else {
+                this.accessList[i].checkAll = false
+                this.accessList[i].isIndeterminate = true
+              }
+            }
+            this.dialog.accessShow = true
+          }
+        })
       },
-      // 添加权限
-      addAccess() {
-        console.log(666)
+      // 角色添加权限
+      roleAddAccess() {
+        this.api.admin.roleAddAccess({role_id: this.current.accessRow.id, permission: this.checkList}).then(res => {
+          if (res.code === 0) {
+            this.dialog.accessShow = false
+          }
+        })
       },
       // 权限全选
       checkAllChange(check, row) {
+        if (check) {
+          row.checkAll = true
+          row.isIndeterminate = false
+        } else {
+          row.checkAll = false
+          row.isIndeterminate = false
+        }
         for (let i = 0; i < row.accesses.length; i++) {
           const index = this.checkList.indexOf(row.accesses[i].id)
           if (check && index === -1) {
             this.checkList.push(row.accesses[i].id)
-            row.checkAll = true
-            row.isIndeterminate = false
           } else if (!check && index !== -1) {
             this.checkList.splice(index, 1)
-            row.checkAll = false
-            row.isIndeterminate = false
           }
         }
       },

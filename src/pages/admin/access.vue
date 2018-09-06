@@ -1,33 +1,44 @@
 <template>
   <section>
+    <el-button class="menu-sort" icon="el-icon-sort" @click="dialog.menuSortDialog=true">菜单排序</el-button>
     <el-table :data="accessList" border>
       <el-table-column align="center" type="index" width="50"></el-table-column>
       <el-table-column align="center" prop="name" label="菜单" width="300"></el-table-column>
       <el-table-column header-align="center" label="权限">
         <template slot-scope="scope">
-
           <div class="access-list">
-
             <el-checkbox class="item-all" v-model="scope.row.checkAll"
                          :indeterminate="scope.row.isIndeterminate"
                          @change="checked=>checkAllChange(checked,scope.row)">全选
             </el-checkbox>
-
             <el-checkbox-group v-model="checkList">
-
               <template v-for="item in scope.row.accesses">
                 <el-checkbox :label="item.id" @change="checked=>checkChange(checked,scope.row)">
                   {{item.name}}
                 </el-checkbox>
               </template>
-
             </el-checkbox-group>
-
           </div>
-
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog title="菜单排序" width="500px" center :visible.sync="dialog.menuSortDialog">
+      <el-table :data="accessList" border>
+        <el-table-column align="center" prop="name" label="菜单" width="300"></el-table-column>
+        <el-table-column align="center" label="排序">
+          <template slot-scope="scope">
+            <el-button icon="el-icon-arrow-up" circle @click="menuSort('up',scope.$index,scope.row)"></el-button>
+            <el-button icon="el-icon-arrow-down" circle @click="menuSort('down',scope.$index,scope.row)"></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button>取 消</el-button>
+        <el-button type="primary">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </section>
 </template>
 
@@ -39,7 +50,10 @@
         // 权限列表
         accessList: [{checkAll: false, isIndeterminate: false}],
         // 存放选中的权限
-        checkList: []
+        checkList: [],
+        dialog: {
+          menuSortDialog: false
+        }
       }
     },
     mounted() {
@@ -50,6 +64,23 @@
       })
     },
     methods: {
+      // 菜单排序
+      menuSort(sort, index, row) {
+        console.log(sort)
+        console.log(index)
+        console.log(row)
+
+        const list = this.accessList
+        list[index] = list[index - 1]
+        list[index - 1] = row
+
+        let arr = []
+        for (let i = 0; i < list.length; i++) {
+          arr.push(list[i])
+        }
+
+        this.accessList = arr
+      },
       // 权限全选
       checkAllChange(check, row) {
         for (let i = 0; i < row.accesses.length; i++) {
@@ -91,10 +122,23 @@
 </script>
 
 <style scoped lang="scss">
+  .menu-sort {
+    margin-bottom: 20px;
+  }
+
+  .el-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    .el-checkbox {
+      margin-left: 0;
+      margin-right: 20px;
+    }
+  }
+
   .access-list {
     display: flex;
     .item-all {
-      margin-right: 30px;
+      margin-right: 20px;
     }
   }
 </style>

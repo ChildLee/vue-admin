@@ -26,8 +26,23 @@ export default class {
     return axios.post('/admin/getRole', params)
   }
 
+  // 角色添加权限
+  static roleAddAccess(params) {
+    return axios.post('/admin/roleAddAccess', params)
+  }
+
+  // 角色查询权限
+  static getRoleAccess(params) {
+    return axios.post('/admin/getRoleAccess', params)
+  }
+
   // 获取权限
   static getAccess(params) {
     return axios.post('/admin/getAccess', params)
+  }
+
+  // 获取用户
+  static getUser(params) {
+    return axios.post('/admin/getUser', params)
   }
 }
