@@ -11,6 +11,8 @@
 </script>
 
 <style lang="scss">
+  @import "scss/icon";
+
   html, body {
     margin: 0;
     height: 100%;

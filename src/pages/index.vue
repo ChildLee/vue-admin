@@ -13,7 +13,7 @@
           <template v-if="item.accesses.length===1">
             <!--主菜单-->
             <el-menu-item :index="item.accesses[0].url">
-              <i class="el-icon-menu"></i>
+              <i class="icon" :class="item.icon"></i>
               <span slot="title">{{item.accesses[0].name}}</span>
             </el-menu-item>
           </template>
@@ -21,7 +21,7 @@
             <!--子菜单-->
             <el-submenu :index="String(item.id)">
               <template slot="title">
-                <i class="el-icon-location"></i>
+                <i class="icon" :class="item.icon"></i>
                 <span slot="title">{{item.name}}</span>
               </template>
               <!--遍历子菜单项-->
@@ -38,6 +38,7 @@
       <!--头部-->
       <el-header>
         <i class="menu-btn el-icon-menu" @click="menuClick"></i>
+        <i class="icon icon-null"></i>
       </el-header>
       <!--内容-->
       <el-main>
