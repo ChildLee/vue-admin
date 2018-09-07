@@ -6,6 +6,11 @@ export default class {
     return axios.post('/admin/getMenu', params)
   }
 
+  // 菜单排序
+  static menuSort(params) {
+    return axios.post('/admin/menuSort', params)
+  }
+
   // 添加角色
   static addRole(params) {
     return axios.post('/admin/addRole', params)

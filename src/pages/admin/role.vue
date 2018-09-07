@@ -241,8 +241,8 @@
               let count = 0
               // 循环判断该菜单里面有几个权限选中
               for (let j = 0; j < accesses.length; j++) {
-                const index = this.checkList.indexOf(accesses[j].id)
-                if (index !== -1) {
+                const bool = this.checkList.includes(accesses[j].id)
+                if (bool) {
                   ++count
                 }
               }
@@ -293,8 +293,8 @@
         let count = 0
         const len = row.accesses.length
         for (let i = 0; i < len; i++) {
-          const index = this.checkList.indexOf(row.accesses[i].id)
-          if (index !== -1) {
+          const bool = this.checkList.includes(row.accesses[i].id)
+          if (bool) {
             ++count
           }
         }

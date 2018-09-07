@@ -63,9 +63,10 @@
     },
     watch: {
       // 监听路由变动
-      '$route': 'fetchData'
+      '$route': 'fetchRoute'
     },
     async mounted() {
+      this.currentRoute = this.$route.path
       //初始化菜单
       await this.api.admin.getMenu().then(res => {
         if (res.code === 0) {
@@ -74,7 +75,7 @@
       })
     },
     methods: {
-      fetchData() {
+      fetchRoute() {
         // 设置菜单默认路由
         this.currentRoute = this.$route.path
       },

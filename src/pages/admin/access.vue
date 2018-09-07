@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-button class="menu-sort" icon="el-icon-sort" @click="dialog.menuSortDialog=true">菜单排序</el-button>
+    <el-button class="menu-sort" icon="el-icon-sort" @click="menuSortButton">菜单排序</el-button>
     <el-table :data="accessList" border>
       <el-table-column align="center" type="index" width="50"></el-table-column>
       <el-table-column align="center" prop="name" label="菜单" width="300"></el-table-column>
@@ -24,18 +24,20 @@
     </el-table>
 
     <el-dialog title="菜单排序" width="500px" center :visible.sync="dialog.menuSortDialog">
-      <el-table :data="accessList" border>
+      <el-table :data="sortList" border>
         <el-table-column align="center" prop="name" label="菜单" width="300"></el-table-column>
         <el-table-column align="center" label="排序">
           <template slot-scope="scope">
-            <el-button icon="el-icon-arrow-up" circle @click="menuSort('up',scope.$index,scope.row)"></el-button>
-            <el-button icon="el-icon-arrow-down" circle @click="menuSort('down',scope.$index,scope.row)"></el-button>
+            <el-button :disabled="scope.row.up" icon="el-icon-arrow-up" circle
+                       @click="menuSort('up',scope.$index,scope.row)"></el-button>
+            <el-button :disabled="scope.row.down" icon="el-icon-arrow-down" circle
+                       @click="menuSort('down',scope.$index,scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
-        <el-button>取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button @click="dialog.menuSortDialog=false">取 消</el-button>
+        <el-button type="primary" @click="menuSortSave">保存</el-button>
       </div>
     </el-dialog>
 
@@ -51,6 +53,7 @@
         accessList: [{checkAll: false, isIndeterminate: false}],
         // 存放选中的权限
         checkList: [],
+        sortList: [],
         dialog: {
           menuSortDialog: false
         }
@@ -64,22 +67,49 @@
       })
     },
     methods: {
+      // 打开排序对话框
+      menuSortButton() {
+        this.sortList = [...this.accessList]
+        for (let i = 0; i < this.sortList.length; i++) {
+          this.sortList[i].up = false
+          this.sortList[i].down = false
+        }
+        this.sortList[0].up = true
+        this.sortList[this.sortList.length - 1].down = true
+        this.dialog.menuSortDialog = true
+      },
       // 菜单排序
       menuSort(sort, index, row) {
-        console.log(sort)
-        console.log(index)
-        console.log(row)
-
-        const list = this.accessList
-        list[index] = list[index - 1]
-        list[index - 1] = row
-
-        let arr = []
-        for (let i = 0; i < list.length; i++) {
-          arr.push(list[i])
+        const list = this.sortList
+        row.up = false
+        row.down = false
+        if (sort === 'up') {
+          list[index] = list[index - 1]
+          list[index - 1] = row
+        } else if (sort === 'down') {
+          list[index] = list[index + 1]
+          list[index + 1] = row
         }
+        list[index].up = false
+        list[index].down = false
 
-        this.accessList = arr
+        list[0].up = true
+        list[this.sortList.length - 1].down = true
+
+        this.sortList = [...list]
+      },
+      // 保存排序
+      menuSortSave() {
+        const sort = []
+        for (let i = 0; i < this.sortList.length; i++) {
+          sort.push({id: this.sortList[i].id, order: i})
+        }
+        this.api.admin.menuSort({sort}).then(res => {
+          if (res.code === 0) {
+            this.accessList = [...this.sortList]
+            this.dialog.menuSortDialog = false
+          }
+        })
       },
       // 权限全选
       checkAllChange(check, row) {
@@ -101,8 +131,8 @@
         let count = 0
         const len = row.accesses.length
         for (let i = 0; i < len; i++) {
-          const index = this.checkList.indexOf(row.accesses[i].id)
-          if (index !== -1) {
+          const bool = this.checkList.includes(row.accesses[i].id)
+          if (bool) {
             ++count
           }
         }
