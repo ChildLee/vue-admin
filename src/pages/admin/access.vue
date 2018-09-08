@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-button class="menu-sort" icon="el-icon-sort" @click="menuSortButton">菜单排序</el-button>
+    <el-button class="menu-sort" icon="el-icon-sort" @click="menuSortButton">菜单管理</el-button>
     <el-table :data="accessList" border>
       <el-table-column align="center" type="index" width="50"></el-table-column>
       <el-table-column align="center" prop="name" label="菜单" width="300"></el-table-column>
@@ -23,9 +23,14 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog title="菜单排序" width="500px" center :visible.sync="dialog.menuSortDialog">
+    <el-dialog title="菜单管理" width="600px" center :visible.sync="dialog.menuSortDialog">
       <el-table :data="sortList" border>
-        <el-table-column align="center" prop="name" label="菜单" width="300"></el-table-column>
+        <el-table-column align="center" prop="name" label="图标" width="150">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.icon"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="name" label="菜单" width="200"></el-table-column>
         <el-table-column align="center" label="排序">
           <template slot-scope="scope">
             <el-button :disabled="scope.row.up" icon="el-icon-arrow-up" circle
@@ -102,7 +107,7 @@
       menuSortSave() {
         const sort = []
         for (let i = 0; i < this.sortList.length; i++) {
-          sort.push({id: this.sortList[i].id, order: i})
+          sort.push({id: this.sortList[i].id, order: i, icon: this.sortList[i].icon})
         }
         this.api.admin.menuSort({sort}).then(res => {
           if (res.code === 0) {

@@ -179,6 +179,7 @@
             this.api.admin.addRole({name: this.roleForm.name}).then(res => {
               if (res.code === 0) {
                 ++this.total
+                this.$message({message: `角色添加成功!`, type: 'success'})
                 this.$refs[formName].resetFields()
                 this.dialog.addRoleShow = false
                 this.roleList.push(res.data)
@@ -189,7 +190,7 @@
       },
       // 删除角色弹窗
       delRoleDialog(index, row) {
-        this.$confirm(`是否删除${row.name}`, '提示', {
+        this.$confirm(`是否删除角色:${row.name}`, '提示', {
           center: true,
           confirmButtonText: '确定',
           cancelButtonText: '取消'
@@ -223,7 +224,7 @@
                 this.dialog.updateRoleShow = false
                 this.$refs[formName].resetFields()
                 this.roleForm.name = ''
-                this.$message({message: '修改成功!', type: 'success'})
+                this.$message({message: '角色名修改成功!', type: 'success'})
               }
             })
           }
@@ -266,6 +267,7 @@
       roleAddAccess() {
         this.api.admin.roleAddAccess({role_id: this.current.accessRow.id, permission: this.checkList}).then(res => {
           if (res.code === 0) {
+            this.$message({message: '角色权限修改成功!', type: 'success'})
             this.dialog.accessShow = false
           }
         })
