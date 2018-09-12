@@ -113,6 +113,7 @@
           if (res.code === 0) {
             this.accessList = [...this.sortList]
             this.dialog.menuSortDialog = false
+            this.$message({message: '菜单保存成功!', type: 'success'})
           }
         })
       },

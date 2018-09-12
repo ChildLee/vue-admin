@@ -2,7 +2,7 @@ import axios from 'axios'
 import admin from './admin'
 import {Loading} from 'element-ui'
 
-axios.defaults.baseURL = 'http://127.0.0.1:3000'
+// axios.defaults.baseURL = 'http://127.0.0.1:3000'
 
 // 加载动画
 let loading
