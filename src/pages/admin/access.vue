@@ -3,7 +3,7 @@
     <el-button class="menu-sort" icon="el-icon-sort" @click="menuSortButton">菜单管理</el-button>
     <el-table :data="accessList" border>
       <el-table-column align="center" type="index" width="50"></el-table-column>
-      <el-table-column align="center" prop="name" label="菜单" width="300"></el-table-column>
+      <el-table-column align="center" prop="name" label="资源" width="300"></el-table-column>
       <el-table-column header-align="center" label="权限">
         <template slot-scope="scope">
           <div class="access-list">
@@ -12,7 +12,7 @@
                          @change="checked=>checkAllChange(checked,scope.row)">全选
             </el-checkbox>
             <el-checkbox-group v-model="checkList">
-              <template v-for="item in scope.row.accesses">
+              <template v-for="item in scope.row.permission">
                 <el-checkbox :label="item.id" @change="checked=>checkChange(checked,scope.row)">
                   {{item.name}}
                 </el-checkbox>
@@ -60,8 +60,8 @@
         checkList: [],
         sortList: [],
         dialog: {
-          menuSortDialog: false
-        }
+          menuSortDialog: false,
+        },
       }
     },
     mounted() {
@@ -119,10 +119,10 @@
       },
       // 权限全选
       checkAllChange(check, row) {
-        for (let i = 0; i < row.accesses.length; i++) {
-          const index = this.checkList.indexOf(row.accesses[i].id)
+        for (let i = 0; i < row.permission.length; i++) {
+          const index = this.checkList.indexOf(row.permission[i].id)
           if (check && index === -1) {
-            this.checkList.push(row.accesses[i].id)
+            this.checkList.push(row.permission[i].id)
             row.checkAll = true
             row.isIndeterminate = false
           } else if (!check && index !== -1) {
@@ -135,9 +135,9 @@
       // 权限单选
       checkChange(check, row) {
         let count = 0
-        const len = row.accesses.length
+        const len = row.permission.length
         for (let i = 0; i < len; i++) {
-          const bool = this.checkList.includes(row.accesses[i].id)
+          const bool = this.checkList.includes(row.permission[i].id)
           if (bool) {
             ++count
           }
@@ -152,8 +152,8 @@
           row.checkAll = false
           row.isIndeterminate = true
         }
-      }
-    }
+      },
+    },
   }
 </script>
 

@@ -2,48 +2,79 @@
   <el-container>
 
     <el-aside>
-      <!--导航-->
+      <!--导航菜单-->
       <el-menu :router="true"
                :collapse="isCollapse"
                :default-active="currentRoute"
                background-color="#545c64"
                text-color="#fff"
                active-text-color="#ffd04b">
+
         <template v-for="item in menuList">
-          <template v-if="item.accesses.length===1">
-            <!--主菜单-->
-            <el-menu-item :index="item.accesses[0].url">
-              <i class="icon" :class="item.icon"></i>
-              <span slot="title">{{item.accesses[0].name}}</span>
-            </el-menu-item>
-          </template>
-          <template v-else>
-            <!--子菜单-->
-            <el-submenu :index="String(item.id)">
+
+          <!--主菜单有子项-->
+          <template v-if="item.menus.length>0">
+
+            <el-submenu :index="String(item.url)">
+
+              <!--主菜单名-->
               <template slot="title">
-                <i class="icon" :class="item.icon"></i>
+                <i class="" :class="item.icon"></i>
                 <span slot="title">{{item.name}}</span>
               </template>
-              <!--遍历子菜单项-->
-              <template v-for="access in item.accesses">
-                <el-menu-item :index="access.url">{{access.name}}</el-menu-item>
+
+              <!--一级菜单-->
+              <template v-for="menu1 in item.menus">
+                <!--一级菜单有子项-->
+                <template v-if="menu1.menus.length>0">
+                  <el-submenu :index="String(menu1.url)">
+                    <span slot="title">{{menu1.name}}</span>
+
+                    <!--二级菜单-->
+                    <template v-for="menu2 in menu1.menus">
+                      <el-menu-item :index="String(menu2.url)">{{menu2.name}}</el-menu-item>
+                    </template>
+
+                  </el-submenu>
+                </template>
+
+                <!--一级菜单没子项-->
+                <template v-else>
+                  <el-menu-item :index="String(menu1.url)">{{menu1.name}}</el-menu-item>
+                </template>
+
               </template>
+
             </el-submenu>
+
           </template>
+
+          <!--主菜单无子项-->
+          <template v-else>
+            <el-menu-item :index="String(item.url)">
+              <i class="" :class="item.icon"></i>
+              <span slot="title">{{item.name}}</span>
+            </el-menu-item>
+          </template>
+
         </template>
+
       </el-menu>
     </el-aside>
 
     <el-container>
+
       <!--头部-->
       <el-header>
         <i class="menu-btn el-icon-menu" @click="menuClick"></i>
         <i class="icon icon-null"></i>
       </el-header>
+
       <!--内容-->
       <el-main>
         <router-view/>
       </el-main>
+
     </el-container>
 
   </el-container>
@@ -57,14 +88,14 @@
         // 当前路由
         currentRoute: '',
         // 菜单列表
-        menuList: [{accesses: []}],
+        menuList: [{menus: []}],
         // 是否折叠菜单
-        isCollapse: false
+        isCollapse: false,
       }
     },
     watch: {
       // 监听路由变动
-      '$route': 'fetchRoute'
+      '$route': 'fetchRoute',
     },
     async mounted() {
       this.currentRoute = this.$route.path
@@ -82,8 +113,8 @@
       },
       menuClick() {
         this.isCollapse = !this.isCollapse
-      }
-    }
+      },
+    },
   }
 </script>
 

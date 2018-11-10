@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-export default class {
+export class admin {
+
   // 获取菜单
   static getMenu(params) {
     return axios.post('/admin/getMenu', params)
@@ -50,4 +51,5 @@ export default class {
   static getUser(params) {
     return axios.post('/admin/getUser', params)
   }
+
 }
