@@ -335,13 +335,23 @@
       // 角色菜单弹窗
       addMenuDialog(row) {
         this.current.accessRow = row
+        // 查询角色已有菜单
+
         this.dialog.menuShow = true
       },
       // 角色添加菜单
       roleAddMenu() {
-        const keys=this.$refs.tree.getCheckedKeys()
-        console.log(this.$refs.tree.getCheckedKeys())
-        console.log(this.$refs.tree.getHalfCheckedKeys())
+        const checkedKeys = this.$refs.tree.getCheckedKeys()
+        const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys()
+        const keys = checkedKeys.concat(halfCheckedKeys)
+
+        this.api.admin.roleAddMenu({role_id: this.current.accessRow.id, menus: keys}).then(res => {
+          if (res.code === 0) {
+            this.$message({message: '角色菜单修改成功!', type: 'success'})
+            this.dialog.menuShow = false
+          }
+        })
+
       },
       // 分页每页条数
       handleSizeChange(limit) {

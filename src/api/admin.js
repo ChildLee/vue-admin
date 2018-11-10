@@ -37,9 +37,19 @@ export class admin {
     return axios.post('/admin/roleAddAccess', params)
   }
 
-  // 角色查询权限
+  // 角色添加菜单
+  static roleAddMenu(params) {
+    return axios.post('/admin/roleAddMenu', params)
+  }
+
+  // 查询角色已有权限
   static getRoleAccess(params) {
     return axios.post('/admin/getRoleAccess', params)
+  }
+
+  // 查询角色已有菜单
+  static getRoleMenu(params) {
+    return axios.post('/admin/getRoleMenu', params)
   }
 
   // 获取权限
