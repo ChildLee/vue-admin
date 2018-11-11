@@ -2,6 +2,11 @@ import axios from 'axios'
 
 export class admin {
 
+  // 登录
+  static login(params) {
+    return axios.post('/admin/login', params)
+  }
+
   // 获取菜单
   static getMenu(params) {
     return axios.post('/admin/getMenu', params)
@@ -50,6 +55,11 @@ export class admin {
   // 查询角色已有菜单
   static getRoleMenu(params) {
     return axios.post('/admin/getRoleMenu', params)
+  }
+
+  // 查询角色已有菜单ID
+  static getRoleMenuKeys(params) {
+    return axios.post('/admin/getRoleMenuKeys', params)
   }
 
   // 获取权限
