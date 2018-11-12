@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {admin} from './admin'
-import {Loading} from 'element-ui'
+import {Loading, Message} from 'element-ui'
 
 // axios.defaults.baseURL = 'http://127.0.0.1:3000' // webpack设置代理
 
@@ -24,6 +24,11 @@ axios.interceptors.response.use(function (res) {
   // 关闭加载动画
   loading.close()
   return res.data
+}, function (err) {
+  if (err.response.data.code) {
+    loading.close()
+    Message.error(err.response.data.message)
+  }
 })
 
 export default {

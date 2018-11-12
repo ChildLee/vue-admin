@@ -5,10 +5,10 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    {path: '/', component: () => import('~/login')},
     {
-      path: '/', component: () => import('~/login'), children: [
-        {path: '/home', component: () => import('~/home')},
-        {path: '/role', component: () => import('~/admin/role')},
+      path: '/home', component: () => import('~/home'), children: [
+        {path: '/', component: () => import('~/admin/role')},
         {path: '/access', component: () => import('~/admin/access')},
         {path: '/user', component: () => import('~/admin/user')},
       ],

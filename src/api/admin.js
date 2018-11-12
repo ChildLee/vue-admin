@@ -7,6 +7,16 @@ export class admin {
     return axios.post('/admin/login', params)
   }
 
+  // 验证码
+  static captcha(params) {
+    return axios.post('/admin/captcha', params)
+  }
+
+  // 刷新验证码
+  static newCaptcha(params) {
+    return axios.post('/admin/newCaptcha', params)
+  }
+
   // 获取菜单
   static getMenu(params) {
     return axios.post('/admin/getMenu', params)
