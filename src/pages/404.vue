@@ -153,9 +153,9 @@
 </template>
 
 <script>
-    export default {
-        name: '404',
-    }
+  export default {
+    name: '404',
+  }
 </script>
 
 <style scoped>
@@ -168,11 +168,13 @@
     margin-left: -400px;
     margin-top: -240px;
   }
+
   .st0 {
     fill-rule: evenodd;
     clip-rule: evenodd;
     fill: #E8EBED;
   }
+
   .st1 {
     fill: #FFFFFF;
     stroke: #89949B;
@@ -181,14 +183,17 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st2 {
     fill-rule: evenodd;
     clip-rule: evenodd;
     fill: #DBDFE1;
   }
+
   .st3 {
     fill: #FFFFFF;
   }
+
   .st4 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -199,6 +204,7 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st5 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -209,6 +215,7 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st6 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -219,6 +226,7 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st7 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -229,6 +237,7 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st8 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -239,14 +248,17 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st9 {
     fill: #89949B;
   }
+
   .st10 {
     fill-rule: evenodd;
     clip-rule: evenodd;
     fill: #89949B;
   }
+
   .st11 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -257,11 +269,13 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st12 {
     fill-rule: evenodd;
     clip-rule: evenodd;
     fill: #FFFFFF;
   }
+
   .st13 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -272,6 +286,7 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st14 {
     fill-rule: evenodd;
     clip-rule: evenodd;
@@ -281,6 +296,7 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   .st15 {
     fill: none;
     stroke: #89949B;
@@ -288,15 +304,18 @@
     stroke-linejoin: round;
     stroke-miterlimit: 10;
   }
+
   #cloud {
     -webkit-animation: cloud 9s infinite ease-in-out;
     -moz-animation: cloud 9s infinite ease-in-out;
     -o-animation: cloud 9s infinite ease-in-out;
     animation: cloud 9s infinite ease-in-out;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes cloud {
     0% {
       opacity: 0.3;
@@ -314,6 +333,7 @@
       -webkit-transform: skewX(20deg);
     }
   }
+
   @-moz-keyframes cloud {
     0% {
       opacity: 0.3;
@@ -331,6 +351,7 @@
       -moz-transform: skewX(20deg);
     }
   }
+
   @-o-keyframes cloud {
     0% {
       opacity: 0.3;
@@ -348,6 +369,7 @@
       -o-transform: skewX(20deg);
     }
   }
+
   @keyframes cloud {
     0% {
       opacity: 0.3;
@@ -374,9 +396,11 @@
       transform: skewX(20deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   #moon {
     transform-origin: 640px 81px;
     -webkit-animation: moon-float 6s infinite ease-in-out;
@@ -384,9 +408,11 @@
     -o-animation: moon-float 6s infinite ease-in-out;
     animation: moon-float 6s infinite ease-in-out;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes moon-float {
     0% {
       -webkit-transform: translate(0, 20px) scale(1.1);
@@ -398,6 +424,7 @@
       -webkit-transform: translate(0, 20px) scale(1.1);
     }
   }
+
   @-moz-keyframes moon-float {
     0% {
       -moz-transform: translate(0, 20px) scale(1.1);
@@ -409,6 +436,7 @@
       -moz-transform: translate(0, 20px) scale(1.1);
     }
   }
+
   @-o-keyframes moon-float {
     0% {
       -o-transform: translate(0, 20px) scale(1.1);
@@ -420,6 +448,7 @@
       -o-transform: translate(0, 20px) scale(1.1);
     }
   }
+
   @keyframes moon-float {
     0% {
       -webkit-transform: translate(0, 20px) scale(1.1);
@@ -440,9 +469,11 @@
       transform: translate(0, 20px) scale(1.1);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   #monkey-eye-l {
     transform-origin: 191px 257px;
     -webkit-animation: blink-l 12s infinite ease-in-out;
@@ -450,6 +481,7 @@
     -o-animation: blink-l 12s infinite ease-in-out;
     animation: blink-l 12s infinite ease-in-out;
   }
+
   #monkey-eye-r {
     transform-origin: 205px 256px;
     -webkit-animation: blink-r 12s infinite ease-in-out;
@@ -457,6 +489,7 @@
     -o-animation: blink-r 12s infinite ease-in-out;
     animation: blink-r 12s infinite ease-in-out;
   }
+
   #monkey-arm {
     transform-origin: 155px 298px;
     -webkit-animation: monkey-arm 4s infinite ease-in-out;
@@ -464,9 +497,11 @@
     -o-animation: monkey-arm 4s infinite ease-in-out;
     animation: monkey-arm 4s infinite ease-in-out;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes monkey-arm {
     0% {
       -webkit-transform: rotateZ(-10deg);
@@ -478,6 +513,7 @@
       -webkit-transform: rotateZ(-10deg);
     }
   }
+
   @-moz-keyframes monkey-arm {
     0% {
       -moz-transform: rotateZ(-10deg);
@@ -489,6 +525,7 @@
       -moz-transform: rotateZ(-10deg);
     }
   }
+
   @-o-keyframes monkey-arm {
     0% {
       -o-transform: rotateZ(-10deg);
@@ -500,6 +537,7 @@
       -o-transform: rotateZ(-10deg);
     }
   }
+
   @keyframes monkey-arm {
     0% {
       -webkit-transform: rotateZ(-10deg);
@@ -520,12 +558,15 @@
       transform: rotateZ(-10deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes blink-l {
     0% {
       -webkit-transform: rotateX(0deg);
@@ -555,6 +596,7 @@
       -webkit-transform: rotateX(0deg);
     }
   }
+
   @-moz-keyframes blink-l {
     0% {
       -moz-transform: rotateX(0deg);
@@ -584,6 +626,7 @@
       -moz-transform: rotateX(0deg);
     }
   }
+
   @-o-keyframes blink-l {
     0% {
       -o-transform: rotateX(0deg);
@@ -613,6 +656,7 @@
       -o-transform: rotateX(0deg);
     }
   }
+
   @keyframes blink-l {
     0% {
       -webkit-transform: rotateX(0deg);
@@ -669,12 +713,15 @@
       transform: rotateX(0deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes blink-r {
     0% {
       -webkit-transform: rotateX(0deg);
@@ -698,6 +745,7 @@
       -webkit-transform: rotateX(0deg);
     }
   }
+
   @-moz-keyframes blink-r {
     0% {
       -moz-transform: rotateX(0deg);
@@ -721,6 +769,7 @@
       -moz-transform: rotateX(0deg);
     }
   }
+
   @-o-keyframes blink-r {
     0% {
       -o-transform: rotateX(0deg);
@@ -744,6 +793,7 @@
       -o-transform: rotateX(0deg);
     }
   }
+
   @keyframes blink-r {
     0% {
       -webkit-transform: rotateX(0deg);
@@ -788,9 +838,11 @@
       transform: rotateX(0deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   #star1 {
     transform-origin: 643px 338px;
     -webkit-animation: star1 12s infinite linear, star1-fade 12s infinite ease-in-out;
@@ -798,6 +850,7 @@
     -o-animation: star1 12s infinite linear, star1-fade 12s infinite ease-in-out;
     animation: star1 12s infinite linear, star1-fade 12s infinite ease-in-out;
   }
+
   #star2 {
     transform-origin: 489px 82px;
     -webkit-animation: star2 12s infinite linear, star2-fade 12s infinite ease-in-out;
@@ -805,6 +858,7 @@
     -o-animation: star2 12s infinite linear, star2-fade 12s infinite ease-in-out;
     animation: star2 12s infinite linear, star2-fade 12s infinite ease-in-out;
   }
+
   #star3 {
     transform-origin: 316px 344px;
     -webkit-animation: star3 12s infinite linear, star3-fade 12s infinite ease-in-out;
@@ -812,6 +866,7 @@
     -o-animation: star3 12s infinite linear, star3-fade 12s infinite ease-in-out;
     animation: star3 12s infinite linear, star3-fade 12s infinite ease-in-out;
   }
+
   #star4 {
     transform-origin: 126px 182px;
     -webkit-animation: star4 12s infinite linear, star4-fade 12s infinite ease-in-out;
@@ -819,9 +874,11 @@
     -o-animation: star4 12s infinite linear, star4-fade 12s infinite ease-in-out;
     animation: star4 12s infinite linear, star4-fade 12s infinite ease-in-out;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star1 {
     0% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -833,6 +890,7 @@
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-moz-keyframes star1 {
     0% {
       -moz-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -844,6 +902,7 @@
       -moz-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-o-keyframes star1 {
     0% {
       -o-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -855,6 +914,7 @@
       -o-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @keyframes star1 {
     0% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -875,12 +935,15 @@
       transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star2 {
     0%, 15% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -892,6 +955,7 @@
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-moz-keyframes star2 {
     0%, 15% {
       -moz-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -903,6 +967,7 @@
       -moz-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-o-keyframes star2 {
     0%, 15% {
       -o-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -914,6 +979,7 @@
       -o-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @keyframes star2 {
     0%, 15% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -934,12 +1000,15 @@
       transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star3 {
     0%, 30% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -951,6 +1020,7 @@
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-moz-keyframes star3 {
     0%, 30% {
       -moz-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -962,6 +1032,7 @@
       -moz-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-o-keyframes star3 {
     0%, 30% {
       -o-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -973,6 +1044,7 @@
       -o-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @keyframes star3 {
     0%, 30% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -993,12 +1065,15 @@
       transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star4 {
     0%, 45% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -1010,6 +1085,7 @@
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-moz-keyframes star4 {
     0%, 45% {
       -moz-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -1021,6 +1097,7 @@
       -moz-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @-o-keyframes star4 {
     0%, 45% {
       -o-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -1032,6 +1109,7 @@
       -o-transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   @keyframes star4 {
     0%, 45% {
       -webkit-transform: scale(.5) skewX(15deg) rotateZ(0deg);
@@ -1052,12 +1130,15 @@
       transform: scale(.5) skewX(15deg) rotateZ(720deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star1-fade {
     0% {
       opacity: 0;
@@ -1069,6 +1150,7 @@
       opacity: 0;
     }
   }
+
   @-moz-keyframes star1-fade {
     0% {
       opacity: 0;
@@ -1080,6 +1162,7 @@
       opacity: 0;
     }
   }
+
   @-o-keyframes star1-fade {
     0% {
       opacity: 0;
@@ -1091,6 +1174,7 @@
       opacity: 0;
     }
   }
+
   @keyframes star1-fade {
     0% {
       opacity: 0;
@@ -1102,12 +1186,15 @@
       opacity: 0;
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star2-fade {
     0%, 15% {
       opacity: 0;
@@ -1119,6 +1206,7 @@
       opacity: 0;
     }
   }
+
   @-moz-keyframes star2-fade {
     0%, 15% {
       opacity: 0;
@@ -1130,6 +1218,7 @@
       opacity: 0;
     }
   }
+
   @-o-keyframes star2-fade {
     0%, 15% {
       opacity: 0;
@@ -1141,6 +1230,7 @@
       opacity: 0;
     }
   }
+
   @keyframes star2-fade {
     0%, 15% {
       opacity: 0;
@@ -1152,12 +1242,15 @@
       opacity: 0;
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star3-fade {
     0%, 30% {
       opacity: 0;
@@ -1169,6 +1262,7 @@
       opacity: 0;
     }
   }
+
   @-moz-keyframes star3-fade {
     0%, 30% {
       opacity: 0;
@@ -1180,6 +1274,7 @@
       opacity: 0;
     }
   }
+
   @-o-keyframes star3-fade {
     0%, 30% {
       opacity: 0;
@@ -1191,6 +1286,7 @@
       opacity: 0;
     }
   }
+
   @keyframes star3-fade {
     0%, 30% {
       opacity: 0;
@@ -1202,12 +1298,15 @@
       opacity: 0;
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes star4-fade {
     0%, 45% {
       opacity: 0;
@@ -1219,6 +1318,7 @@
       opacity: 0;
     }
   }
+
   @-moz-keyframes star4-fade {
     0%, 45% {
       opacity: 0;
@@ -1230,6 +1330,7 @@
       opacity: 0;
     }
   }
+
   @-o-keyframes star4-fade {
     0%, 45% {
       opacity: 0;
@@ -1241,6 +1342,7 @@
       opacity: 0;
     }
   }
+
   @keyframes star4-fade {
     0%, 45% {
       opacity: 0;
@@ -1252,9 +1354,11 @@
       opacity: 0;
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   #sword-path {
     transform-origin: 458px 206px;
     -webkit-animation: tetris-float 3s infinite ease-in-out;
@@ -1262,6 +1366,7 @@
     -o-animation: tetris-float 3s infinite ease-in-out;
     animation: tetris-float 3s infinite ease-in-out;
   }
+
   #sword {
     transform-origin: 458px 206px;
     -webkit-animation: sword 4s infinite ease-out;
@@ -1269,9 +1374,11 @@
     -o-animation: sword 4s infinite ease-out;
     animation: sword 4s infinite ease-out;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes sword {
     0%, 15% {
       -webkit-transform: rotate(-40deg);
@@ -1283,6 +1390,7 @@
       -webkit-transform: rotate(-40deg);
     }
   }
+
   @-moz-keyframes sword {
     0%, 15% {
       -moz-transform: rotate(-40deg);
@@ -1294,6 +1402,7 @@
       -moz-transform: rotate(-40deg);
     }
   }
+
   @-o-keyframes sword {
     0%, 15% {
       -o-transform: rotate(-40deg);
@@ -1305,6 +1414,7 @@
       -o-transform: rotate(-40deg);
     }
   }
+
   @keyframes sword {
     0%, 15% {
       -webkit-transform: rotate(-40deg);
@@ -1325,9 +1435,11 @@
       transform: rotate(-40deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   #tetris-path {
     transform-origin: 538px 374px;
     -webkit-animation: tetris-float 5s infinite ease-in-out;
@@ -1335,6 +1447,7 @@
     -o-animation: tetris-float 5s infinite ease-in-out;
     animation: tetris-float 5s infinite ease-in-out;
   }
+
   #tetris {
     transform-origin: 538px 374px;
     -webkit-animation: rotate 10s steps(1) infinite alternate;
@@ -1342,9 +1455,11 @@
     -o-animation: rotate 10s steps(1) infinite alternate;
     animation: rotate 10s steps(1) infinite alternate;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes rotate {
     0% {
       -webkit-transform: rotateZ(0deg);
@@ -1362,6 +1477,7 @@
       -webkit-transform: rotateZ(360deg);
     }
   }
+
   @-moz-keyframes rotate {
     0% {
       -moz-transform: rotateZ(0deg);
@@ -1379,6 +1495,7 @@
       -moz-transform: rotateZ(360deg);
     }
   }
+
   @-o-keyframes rotate {
     0% {
       -o-transform: rotateZ(0deg);
@@ -1396,6 +1513,7 @@
       -o-transform: rotateZ(360deg);
     }
   }
+
   @keyframes rotate {
     0% {
       -webkit-transform: rotateZ(0deg);
@@ -1428,12 +1546,15 @@
       transform: rotateZ(360deg);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes tetris-float {
     0% {
       -webkit-transform: translate(0px, 0px) scale(0.90)
@@ -1445,6 +1566,7 @@
       -webkit-transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   @-moz-keyframes tetris-float {
     0% {
       -moz-transform: translate(0px, 0px) scale(0.90)
@@ -1456,6 +1578,7 @@
       -moz-transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   @-o-keyframes tetris-float {
     0% {
       -o-transform: translate(0px, 0px) scale(0.90)
@@ -1467,6 +1590,7 @@
       -o-transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   @keyframes tetris-float {
     0% {
       -webkit-transform: translate(0px, 0px) scale(0.90);
@@ -1487,9 +1611,11 @@
       transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }
+
   #triforce {
     transform-origin: 175px 91px;
     -webkit-animation: triforce-float 3s infinite ease-in-out;
@@ -1497,9 +1623,11 @@
     -o-animation: triforce-float 3s infinite ease-in-out;
     animation: triforce-float 3s infinite ease-in-out;
   }
+
   lesshat-selector {
     -lh-property: 0;
   }
+
   @-webkit-keyframes triforce-float {
     0% {
       -webkit-transform: translate(0px, 0px) scale(0.90)
@@ -1511,6 +1639,7 @@
       -webkit-transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   @-moz-keyframes triforce-float {
     0% {
       -moz-transform: translate(0px, 0px) scale(0.90)
@@ -1522,6 +1651,7 @@
       -moz-transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   @-o-keyframes triforce-float {
     0% {
       -o-transform: translate(0px, 0px) scale(0.90)
@@ -1533,6 +1663,7 @@
       -o-transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   @keyframes triforce-float {
     0% {
       -webkit-transform: translate(0px, 0px) scale(0.90);
@@ -1553,6 +1684,7 @@
       transform: translate(0px, 0px) scale(0.90);
     }
   }
+
   [not-existing] {
     zoom: 1;
   }

@@ -67,7 +67,16 @@
       <!--头部-->
       <el-header>
         <i class="menu-btn el-icon-menu" @click="menuClick"></i>
-        <i class="icon icon-null"></i>
+
+        <el-dropdown trigger="click">
+          <div>
+            <span>用户设置</span>
+            <i class="el-icon-setting"></i>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="sign_out">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-header>
 
       <!--内容-->
@@ -97,22 +106,33 @@
       // 监听路由变动
       '$route': 'fetchRoute',
     },
-    async mounted() {
-      this.currentRoute = this.$route.path
-      //初始化菜单
-      await this.api.admin.getMenu().then(res => {
-        if (res.code === 0) {
-          this.menuList = res.data
-        }
-      })
+    mounted() {
+      this.init()
     },
     methods: {
+      async init() {
+        this.currentRoute = this.$route.path
+        //初始化菜单(改)
+        await this.api.user.getUserMenu({id: this.$store.getters.getUserId}).then(res => {
+          if (res && res.code === 0) this.menuList = res.data
+        })
+      },
       fetchRoute() {
         // 设置菜单默认路由
         this.currentRoute = this.$route.path
       },
       menuClick() {
         this.isCollapse = !this.isCollapse
+      },
+      // 退出登录
+      sign_out() {
+        this.api.user.sign_out({id: this.$store.getters.getUserId}).then(res => {
+          if (res && res.code === 0) {
+            this.$store.commit('setUserId', null)
+            this.$store.commit('setToken', null)
+            this.$router.push({path: '/'})
+          }
+        })
       },
     },
   }
@@ -135,12 +155,17 @@
     /*头部*/
     .el-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
       background-color: #545c64;
       .menu-btn {
         color: #fff;
         cursor: pointer;
         font-size: 30px;
+      }
+      .el-dropdown {
+        color: #fff;
+        cursor: pointer;
       }
     }
   }

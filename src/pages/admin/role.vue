@@ -2,6 +2,7 @@
   <section>
 
     <el-button @click="dialog.addRoleShow = true">添加角色</el-button>
+    <el-button icon="el-icon-sort" type="success" @click="menuSortButton">菜单管理</el-button>
 
     <el-table :data="roleList">
       <el-table-column align="center" type="index" width="50"></el-table-column>
@@ -100,6 +101,30 @@
 
     </el-dialog>
 
+    <!--菜单管理-->
+    <el-dialog title="菜单管理" width="600px" center :visible.sync="dialog.menuSortDialog">
+      <el-table :data="sortList" border>
+        <el-table-column align="center" prop="name" label="图标" width="150">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.icon"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="name" label="菜单" width="200"></el-table-column>
+        <el-table-column align="center" label="排序">
+          <template slot-scope="scope">
+            <el-button :disabled="scope.row.up" icon="el-icon-arrow-up" circle
+                       @click="menuSort('up',scope.$index,scope.row)"></el-button>
+            <el-button :disabled="scope.row.down" icon="el-icon-arrow-down" circle
+                       @click="menuSort('down',scope.$index,scope.row)"></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialog.menuSortDialog=false">取 消</el-button>
+        <el-button type="primary" @click="menuSortSave">保存</el-button>
+      </div>
+    </el-dialog>
+
   </section>
 </template>
 
@@ -113,6 +138,8 @@
         roleRow: {},
         // 角色列表
         roleList: [],
+        // 菜单管理列表
+        sortList: [],
         // 权限列表
         accessList: [{checkAll: false, isIndeterminate: false}],
         // 菜单列表
@@ -130,6 +157,8 @@
           accessShow: false,
           // 菜单对话框
           menuShow: false,
+          // 菜单管理对话框
+          menuSortDialog: false,
         },
         // 输入的角色名
         roleForm: {
@@ -148,7 +177,7 @@
     mounted() {
       this.getRole()
       this.getAccess()
-      this.getMenu()
+      this.getMenuAll()
     },
     methods: {
       // 重置表单
@@ -162,7 +191,7 @@
       // 查询角色
       getRole(page = 1, limit = 10) {
         this.api.admin.getRole({page, limit}).then(res => {
-          if (res.code === 0) {
+          if (res && res.code === 0) {
             this.roleList = res.data.list
             this.total = res.data.total
           }
@@ -171,15 +200,15 @@
       // 查询权限
       getAccess() {
         this.api.admin.getAccess().then(res => {
-          if (res.code === 0) {
+          if (res && res.code === 0) {
             this.accessList = res.data
           }
         })
       },
       // 查询所有菜单
-      getMenu() {
-        this.api.admin.getMenu().then(res => {
-          if (res.code === 0) {
+      getMenuAll() {
+        this.api.admin.getMenuAll().then(res => {
+          if (res && res.code === 0) {
             const menus = res.data
             this.menuList = menus
 
@@ -205,7 +234,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.api.admin.addRole({name: this.roleForm.name}).then(res => {
-              if (res.code === 0) {
+              if (res && res.code === 0) {
                 ++this.total
                 this.$message({message: `角色添加成功!`, type: 'success'})
                 this.$refs[formName].resetFields()
@@ -224,7 +253,7 @@
           cancelButtonText: '取消',
         }).then(() => {
           this.api.admin.delRole({id: row.id}).then(res => {
-            if (res.code === 0) {
+            if (res && res.code === 0) {
               this.roleList.splice(index, 1)
               this.$message({message: `删除${row.name}成功!`, type: 'success'})
             }
@@ -246,7 +275,7 @@
               id: this.roleRow.id,
               name: name,
             }).then(res => {
-              if (res.code === 0) {
+              if (res && res.code === 0) {
                 this.roleRow.name = name
                 this.dialog.updateRoleShow = false
                 this.$refs[formName].resetFields()
@@ -262,7 +291,7 @@
         this.roleRow = row
         // 查询角色已有权限
         this.api.admin.getRoleAccess({role_id: row.id}).then(res => {
-          if (res.code === 0) {
+          if (res && res.code === 0) {
             this.checkList = res.data
             for (let i = 0; i < this.accessList.length; i++) {
               const permissions = this.accessList[i].permissions
@@ -293,7 +322,7 @@
       // 角色添加权限
       roleAddAccess() {
         this.api.admin.roleAddAccess({role_id: this.roleRow.id, permissions: this.checkList}).then(res => {
-          if (res.code === 0) {
+          if (res && res.code === 0) {
             this.$message({message: '角色权限修改成功!', type: 'success'})
             this.dialog.accessShow = false
           }
@@ -343,7 +372,7 @@
         this.roleRow = row
         // 查询角色已有菜单
         this.api.admin.getRoleMenuKeys({role_id: this.roleRow.id}).then(res => {
-          if (res.code === 0) {
+          if (res && res.code === 0) {
             const arr = []
             for (let i = 0; i < res.data.length; i++) {
               const menu_id = res.data[i].menu_id
@@ -368,9 +397,56 @@
         const keys = checkedKeys.concat(halfCheckedKeys)
 
         this.api.admin.roleAddMenu({role_id: this.roleRow.id, menus: keys}).then(res => {
-          if (res.code === 0) {
+          if (res && res.code === 0) {
             this.$message({message: '角色菜单修改成功!', type: 'success'})
             this.dialog.menuShow = false
+          }
+        })
+      },
+      // 打开菜单管理对话框
+      menuSortButton() {
+        this.sortList = [...this.menuList]
+
+        for (let i = 0; i < this.sortList.length; i++) {
+          this.sortList[i].up = false
+          this.sortList[i].down = false
+        }
+        this.sortList[0].up = true
+        this.sortList[this.sortList.length - 1].down = true
+        this.dialog.menuSortDialog = true
+      },
+      // 菜单排序
+      menuSort(sort, index, row) {
+        const list = this.sortList
+        row.up = false
+        row.down = false
+        if (sort === 'up') {
+          list[index] = list[index - 1]
+          list[index - 1] = row
+        } else if (sort === 'down') {
+          list[index] = list[index + 1]
+          list[index + 1] = row
+        }
+        list[index].up = false
+        list[index].down = false
+
+        list[0].up = true
+        list[this.sortList.length - 1].down = true
+
+        this.sortList = [...list]
+      },
+      // 保存排序
+      menuSortSave() {
+        const sort = []
+        for (let i = 0; i < this.sortList.length; i++) {
+          sort.push({id: this.sortList[i].id, order: i, icon: this.sortList[i].icon})
+        }
+        this.api.admin.menuSort({sort}).then(res => {
+          if (res && res.code === 0) {
+            this.menuList = [...this.sortList]
+            this.dialog.menuSortDialog = false
+            this.$message({message: '菜单保存成功!', type: 'success'})
+            location.reload()
           }
         })
       },

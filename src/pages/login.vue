@@ -12,7 +12,7 @@
       </el-form-item>
 
       <el-form-item label="密码" prop="password">
-        <el-input maxlength="50" v-model="loginForm.password"
+        <el-input maxlength="50" v-model="loginForm.password" type="password"
                   @keyup.enter.native="submitForm('ruleForm')"></el-input>
       </el-form-item>
 
@@ -20,7 +20,7 @@
         <div class="login-captcha">
           <el-input maxlength="4" v-model="loginForm.captcha"
                     @keyup.enter.native="submitForm('ruleForm')"></el-input>
-          <div class="captcha" v-html="captcha" @click="newCaptcha"></div>
+          <div class="captcha" v-html="captcha" @click="getCaptcha"></div>
         </div>
       </el-form-item>
 
@@ -58,18 +58,10 @@
     methods: {
       // 获取验证码
       getCaptcha() {
-        this.api.admin.captcha().then(res => {
-          if (res.code === 0) {
+        this.api.user.captcha({key: this.loginForm.key}).then(res => {
+          if (res && res.code === 0) {
             this.loginForm.key = res.data.key
             this.captcha = res.data.data
-          }
-        })
-      },
-      // 刷新验证码
-      newCaptcha() {
-        this.api.admin.newCaptcha({key: this.loginForm.key}).then(res => {
-          if (res.code === 0) {
-            this.captcha = res.data
           }
         })
       },
@@ -77,11 +69,18 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.api.admin.login(this.loginForm).then(res => {
-              if (res.code === 0) {
+            this.api.user.login(this.loginForm).then(res => {
+              if (res && res.code === 0) {
+                this.$store.commit('setUserId', res.data.id)
+                this.$store.commit('setToken', res.data.token)
                 this.$router.push({path: '/home'})
                 this.$message.success('登录成功')
               }
+            }).catch(() => {
+              this.getCaptcha()
+              this.$refs[formName].fields.forEach(function (e) {
+                if (e.prop === 'captcha') e.resetField()
+              })
             })
           }
         })
@@ -89,6 +88,7 @@
       // 重置
       resetForm(formName) {
         this.$refs[formName].resetFields()
+        this.getCaptcha()
       },
     },
   }

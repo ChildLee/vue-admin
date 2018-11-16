@@ -12,6 +12,9 @@ import {
   Col,
   Container,
   Dialog,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
   Form,
   FormItem,
   Header,
@@ -29,7 +32,7 @@ import {
   Submenu,
   Table,
   TableColumn,
-  Tree
+  Tree,
 } from 'element-ui'
 
 Vue.prototype.api = api
@@ -50,6 +53,9 @@ Vue.use(CheckboxGroup)
 Vue.use(Col)
 Vue.use(Container)
 Vue.use(Dialog)
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Header)
@@ -70,5 +76,5 @@ new Vue({
   el: '#app',
   store,
   router,
-  render: (h) => h(App)
+  render: (h) => h(App),
 })

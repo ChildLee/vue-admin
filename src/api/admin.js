@@ -2,24 +2,9 @@ import axios from 'axios'
 
 export class admin {
 
-  // 登录
-  static login(params) {
-    return axios.post('/admin/login', params)
-  }
-
-  // 验证码
-  static captcha(params) {
-    return axios.post('/admin/captcha', params)
-  }
-
-  // 刷新验证码
-  static newCaptcha(params) {
-    return axios.post('/admin/newCaptcha', params)
-  }
-
   // 获取菜单
-  static getMenu(params) {
-    return axios.post('/admin/getMenu', params)
+  static getMenuAll(params) {
+    return axios.post('/admin/getMenuAll', params)
   }
 
   // 菜单排序
@@ -60,11 +45,6 @@ export class admin {
   // 查询角色已有权限
   static getRoleAccess(params) {
     return axios.post('/admin/getRoleAccess', params)
-  }
-
-  // 查询角色已有菜单
-  static getRoleMenu(params) {
-    return axios.post('/admin/getRoleMenu', params)
   }
 
   // 查询角色已有菜单ID

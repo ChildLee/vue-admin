@@ -8,8 +8,8 @@ export default new Router({
     {path: '/', component: () => import('~/login')},
     {
       path: '/home', component: () => import('~/home'), children: [
-        {path: '/', component: () => import('~/admin/role')},
-        {path: '/access', component: () => import('~/admin/access')},
+        {path: '/', redirect: {path: '/role'}},
+        {path: '/role', component: () => import('~/admin/role')},
         {path: '/user', component: () => import('~/admin/user')},
       ],
     },
