@@ -70,7 +70,7 @@
 
         <el-dropdown trigger="click">
           <div>
-            <span>用户设置</span>
+            <span>个人中心</span>
             <i class="el-icon-setting"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -110,10 +110,10 @@
       this.init()
     },
     methods: {
-      async init() {
+      init() {
         this.currentRoute = this.$route.path
         //初始化菜单(改)
-        await this.api.user.getUserMenu({id: this.$store.getters.getUserId}).then(res => {
+        this.api.menu.getUserMenu({id: this.$store.getters.getUserId}).then(res => {
           if (res && res.code === 0) this.menuList = res.data
         })
       },
@@ -126,7 +126,7 @@
       },
       // 退出登录
       sign_out() {
-        this.api.user.sign_out({id: this.$store.getters.getUserId}).then(res => {
+        this.api.user.sign_out().then(res => {
           if (res && res.code === 0) {
             this.$store.commit('setUserId', null)
             this.$store.commit('setToken', null)

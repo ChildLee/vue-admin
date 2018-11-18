@@ -32,9 +32,9 @@
     <el-dialog title="添加角色" width="500px" center
                :before-close="done=>resetForm('addRoleForm',done)"
                :visible.sync="dialog.addRoleShow">
-      <el-form ref="addRoleForm" :model="roleForm" :rules="rules" label-position="left" label-width="80px">
+      <el-form ref="addRoleForm" :model="dataForm" :rules="rules" label-position="left" label-width="80px">
         <el-form-item label="角色名" prop="name">
-          <el-input maxlength="50" placeholder="请输入角色名" v-model="roleForm.name"></el-input>
+          <el-input maxlength="50" placeholder="请输入角色名" v-model="dataForm.name"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -47,10 +47,10 @@
     <el-dialog title="修改角色" width="500px" center
                :before-close="done=>resetForm('updateRoleForm',done)"
                :visible.sync="dialog.updateRoleShow">
-      <el-form ref="updateRoleForm" :model="roleForm" :rules="rules" label-position="left"
+      <el-form ref="updateRoleForm" :model="dataForm" :rules="rules" label-position="left"
                label-width="80px">
         <el-form-item label="角色名" prop="name">
-          <el-input maxlength="50" placeholder="请输入角色名" v-model="roleForm.name"></el-input>
+          <el-input maxlength="50" placeholder="请输入角色名" v-model="dataForm.name"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -60,7 +60,7 @@
     </el-dialog>
 
     <!--修改权限对话框-->
-    <el-dialog :title="`${roleRow.name}-权限列表`" width="1000px" center :visible.sync="dialog.accessShow">
+    <el-dialog :title="`${dataRow.name}-权限列表`" width="1000px" center :visible.sync="dialog.accessShow">
       <el-table :data="accessList" border>
         <el-table-column align="center" type="index" width="50"></el-table-column>
         <el-table-column align="center" prop="name" label="资源" width="200"></el-table-column>
@@ -89,7 +89,7 @@
     </el-dialog>
 
     <!--角色显示菜单设置-->
-    <el-dialog :title="`${roleRow.name}-菜单列表`" width="600px" :visible.sync="dialog.menuShow">
+    <el-dialog :title="`${dataRow.name}-菜单列表`" width="600px" :visible.sync="dialog.menuShow">
 
       <el-tree :data="menuList" :props="{label:'name',children:'menus'}" node-key="id"
                show-checkbox :default-expand-all="true" ref="tree"></el-tree>
@@ -131,11 +131,12 @@
 <script>
 
   export default {
+    // 角色管理
     name: 'role',
     data() {
       return {
         // 选中角色信息
-        roleRow: {},
+        dataRow: {},
         // 角色列表
         roleList: [],
         // 菜单管理列表
@@ -161,12 +162,12 @@
           menuSortDialog: false,
         },
         // 输入的角色名
-        roleForm: {
+        dataForm: {
           name: '',
         },
         rules: {
           name: [
-            {required: true, message: '请输入角色名', trigger: 'blur'},
+            {required: true, message: '请输入角色名'},
           ],
         },
         page: 0,
@@ -175,8 +176,8 @@
       }
     },
     mounted() {
-      this.getRole()
-      this.getAccess()
+      this.getRoleAll()
+      this.getAccessAll()
       this.getMenuAll()
     },
     methods: {
@@ -186,11 +187,11 @@
         this.dialog.addRoleShow = false
         this.dialog.updateRoleShow = false
         this.$refs[formName].resetFields()
-        this.roleForm.name = ''
+        this.dataForm.name = ''
       },
       // 查询角色
-      getRole(page = 1, limit = 10) {
-        this.api.admin.getRole({page, limit}).then(res => {
+      getRoleAll(page = 1, limit = 10) {
+        this.api.role.getRoleAll({page, limit}).then(res => {
           if (res && res.code === 0) {
             this.roleList = res.data.list
             this.total = res.data.total
@@ -198,8 +199,8 @@
         })
       },
       // 查询权限
-      getAccess() {
-        this.api.admin.getAccess().then(res => {
+      getAccessAll() {
+        this.api.role.getAccessAll().then(res => {
           if (res && res.code === 0) {
             this.accessList = res.data
           }
@@ -207,7 +208,7 @@
       },
       // 查询所有菜单
       getMenuAll() {
-        this.api.admin.getMenuAll().then(res => {
+        this.api.menu.getMenuAll().then(res => {
           if (res && res.code === 0) {
             const menus = res.data
             this.menuList = menus
@@ -233,7 +234,7 @@
       addRole(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.api.admin.addRole({name: this.roleForm.name}).then(res => {
+            this.api.role.addRole({name: this.dataForm.name}).then(res => {
               if (res && res.code === 0) {
                 ++this.total
                 this.$message({message: `角色添加成功!`, type: 'success'})
@@ -247,12 +248,12 @@
       },
       // 删除角色弹窗
       delRoleDialog(index, row) {
-        this.$confirm(`是否删除角色:${row.name}`, '提示', {
+        this.$confirm(`是否删除角色：${row.name}`, '提示', {
           center: true,
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(() => {
-          this.api.admin.delRole({id: row.id}).then(res => {
+          this.api.role.delRole({id: row.id}).then(res => {
             if (res && res.code === 0) {
               this.roleList.splice(index, 1)
               this.$message({message: `删除${row.name}成功!`, type: 'success'})
@@ -263,23 +264,23 @@
       // 修改角色弹窗
       updateRoleDialog(row) {
         this.dialog.updateRoleShow = true
-        this.roleRow = row
-        this.roleForm.name = row.name
+        this.dataRow = row
+        this.dataForm.name = row.name
       },
       // 修改角色确定
       updateRole(formName) {
         this.$refs[formName].validate((valid) => {
-          const name = this.roleForm.name
+          const name = this.dataForm.name
           if (valid) {
-            this.api.admin.updateRole({
-              id: this.roleRow.id,
+            this.api.role.updateRole({
+              id: this.dataRow.id,
               name: name,
             }).then(res => {
               if (res && res.code === 0) {
-                this.roleRow.name = name
+                this.dataRow.name = name
                 this.dialog.updateRoleShow = false
                 this.$refs[formName].resetFields()
-                this.roleForm.name = ''
+                this.dataForm.name = ''
                 this.$message({message: '角色名修改成功!', type: 'success'})
               }
             })
@@ -288,9 +289,9 @@
       },
       // 添加权限弹窗
       addAccessDialog(row) {
-        this.roleRow = row
+        this.dataRow = row
         // 查询角色已有权限
-        this.api.admin.getRoleAccess({role_id: row.id}).then(res => {
+        this.api.role.getRoleAccess({role_id: row.id}).then(res => {
           if (res && res.code === 0) {
             this.checkList = res.data
             for (let i = 0; i < this.accessList.length; i++) {
@@ -321,7 +322,7 @@
       },
       // 角色添加权限
       roleAddAccess() {
-        this.api.admin.roleAddAccess({role_id: this.roleRow.id, permissions: this.checkList}).then(res => {
+        this.api.role.roleAddAccess({role_id: this.dataRow.id, permissions: this.checkList}).then(res => {
           if (res && res.code === 0) {
             this.$message({message: '角色权限修改成功!', type: 'success'})
             this.dialog.accessShow = false
@@ -369,9 +370,9 @@
       },
       // 角色菜单弹窗
       addMenuDialog(row) {
-        this.roleRow = row
+        this.dataRow = row
         // 查询角色已有菜单
-        this.api.admin.getRoleMenuKeys({role_id: this.roleRow.id}).then(res => {
+        this.api.role.getRoleMenuKeys({role_id: this.dataRow.id}).then(res => {
           if (res && res.code === 0) {
             const arr = []
             for (let i = 0; i < res.data.length; i++) {
@@ -396,7 +397,7 @@
         const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys()
         const keys = checkedKeys.concat(halfCheckedKeys)
 
-        this.api.admin.roleAddMenu({role_id: this.roleRow.id, menus: keys}).then(res => {
+        this.api.role.roleAddMenu({role_id: this.dataRow.id, menus: keys}).then(res => {
           if (res && res.code === 0) {
             this.$message({message: '角色菜单修改成功!', type: 'success'})
             this.dialog.menuShow = false
@@ -441,35 +442,29 @@
         for (let i = 0; i < this.sortList.length; i++) {
           sort.push({id: this.sortList[i].id, order: i, icon: this.sortList[i].icon})
         }
-        this.api.admin.menuSort({sort}).then(res => {
+        this.api.menu.menuSort({sort}).then(res => {
           if (res && res.code === 0) {
             this.menuList = [...this.sortList]
             this.dialog.menuSortDialog = false
             this.$message({message: '菜单保存成功!', type: 'success'})
-            location.reload()
           }
         })
       },
       // 分页每页条数
       handleSizeChange(limit) {
         this.limit = limit
-        this.getRole(this.page = 1, limit)
+        this.getRoleAll(this.page = 1, limit)
       },
       // 分页当前第几页
       handleCurrentChange(page) {
         this.page = page
-        this.getRole(page, this.limit)
+        this.getRoleAll(page, this.limit)
       },
     },
   }
 </script>
 
 <style scoped lang="scss">
-  .dialog-content {
-    display: flex;
-    justify-content: center;
-  }
-
   .el-pagination {
     display: flex;
     justify-content: center;

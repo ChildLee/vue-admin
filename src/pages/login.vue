@@ -20,7 +20,7 @@
         <div class="login-captcha">
           <el-input maxlength="4" v-model="loginForm.captcha"
                     @keyup.enter.native="submitForm('ruleForm')"></el-input>
-          <div class="captcha" v-html="captcha" @click="getCaptcha"></div>
+          <div class="captcha" v-html="captcha" @click="getCaptcha('ruleForm')"></div>
         </div>
       </el-form-item>
 
@@ -53,15 +53,27 @@
       }
     },
     mounted() {
-      this.getCaptcha()
+      this.init()
     },
     methods: {
+      init() {
+        if (this.$store.getters.getUserId) {
+          this.$router.push({path: '/home'})
+        } else {
+          this.getCaptcha()
+        }
+      },
       // 获取验证码
-      getCaptcha() {
-        this.api.user.captcha({key: this.loginForm.key}).then(res => {
+      getCaptcha(formName) {
+        return this.api.user.captcha({key: this.loginForm.key}).then(res => {
           if (res && res.code === 0) {
             this.loginForm.key = res.data.key
             this.captcha = res.data.data
+            if (formName) {
+              this.$refs[formName].fields.forEach(function (e) {
+                if (e.prop === 'captcha') e.resetField()
+              })
+            }
           }
         })
       },
@@ -75,12 +87,9 @@
                 this.$store.commit('setToken', res.data.token)
                 this.$router.push({path: '/home'})
                 this.$message.success('登录成功')
+              } else {
+                this.getCaptcha(formName)
               }
-            }).catch(() => {
-              this.getCaptcha()
-              this.$refs[formName].fields.forEach(function (e) {
-                if (e.prop === 'captcha') e.resetField()
-              })
             })
           }
         })

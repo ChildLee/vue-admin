@@ -1,14 +1,16 @@
 import store from '../store/index'
 import router from '../router/index'
 import axios from 'axios'
+import {menu} from './menu'
+import {organization} from './organization'
+import {role} from './role'
 import {user} from './user'
-import {admin} from './admin'
 import {Loading, Message} from 'element-ui'
 
 // axios.defaults.baseURL = 'http://127.0.0.1:3000' // webpack设置代理
 
 // 加载动画
-let loading
+let loading = null
 
 // 请求拦截器
 axios.interceptors.request.use(req => {
@@ -24,22 +26,28 @@ axios.interceptors.request.use(req => {
 })
 
 // 响应拦截器
-axios.interceptors.response.use(res => {
-  if (res.data.token) store.commit('setToken', res.data.token)
-  // 关闭加载动画
-  loading.close()
-  return res.data
-}, function (err) {
-  if (err.response.data.code) {
-    // 20005-Token过期
-    if (err.response.data.code === 20005) {
-      router.push({path: '/'})
-    }
+axios.interceptors.response.use(
+  res => {
+    if (res.data.token) store.commit('setToken', res.data.token)
+    // 关闭加载动画
     loading.close()
-    Message.error(err.response.data.message)
-  }
-})
+    return res.data
+  },
+  err => {
+    if (err.response.data && err.response.data.code) {
+      // 20005-Token过期
+      if (err.response.data.code === 20005) {
+        store.commit('setUserId', null)
+        store.commit('setToken', null)
+        router.push({path: '/'})
+      }
+      loading.close()
+      Message.error(err.response.data.message)
+    }
+    return err
+  },
+)
 
 export default {
-  user, admin,
+  menu, organization, role, user,
 }
