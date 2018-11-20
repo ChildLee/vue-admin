@@ -37,7 +37,7 @@
           <el-input maxlength="50" placeholder="请输入角色名" v-model="dataForm.name"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer">
         <el-button @click="resetForm('addRoleForm')">取 消</el-button>
         <el-button type="primary" @click="addRole('addRoleForm')">确 定</el-button>
       </div>
@@ -53,7 +53,7 @@
           <el-input maxlength="50" placeholder="请输入角色名" v-model="dataForm.name"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer">
         <el-button @click="resetForm('updateRoleForm')">取 消</el-button>
         <el-button type="primary" @click="updateRole('updateRoleForm')">确 定</el-button>
       </div>
@@ -82,7 +82,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer">
         <el-button @click="dialog.accessShow = false">取 消</el-button>
         <el-button type="primary" @click="roleAddAccess">确 定</el-button>
       </div>
@@ -94,7 +94,7 @@
       <el-tree :data="menuList" :props="{label:'name',children:'menus'}" node-key="id"
                show-checkbox :default-expand-all="true" ref="tree"></el-tree>
 
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer">
         <el-button @click="dialog.menuShow = false">取 消</el-button>
         <el-button type="primary" @click="roleAddMenu">确 定</el-button>
       </div>
@@ -119,7 +119,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer">
         <el-button @click="dialog.menuSortDialog=false">取 消</el-button>
         <el-button type="primary" @click="menuSortSave">保存</el-button>
       </div>
@@ -178,7 +178,6 @@
     mounted() {
       this.getRoleAll()
       this.getAccessAll()
-      this.getMenuAll()
     },
     methods: {
       // 重置表单
@@ -207,8 +206,8 @@
         })
       },
       // 查询所有菜单
-      getMenuAll() {
-        this.api.menu.getMenuAll().then(res => {
+      async getMenuAll() {
+        return this.api.menu.getMenuAll().then(res => {
           if (res && res.code === 0) {
             const menus = res.data
             this.menuList = menus
@@ -258,6 +257,11 @@
               this.roleList.splice(index, 1)
               this.$message({message: `删除${row.name}成功!`, type: 'success'})
             }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
           })
         })
       },
@@ -369,10 +373,13 @@
         }
       },
       // 角色菜单弹窗
-      addMenuDialog(row) {
+      async addMenuDialog(row) {
+        if (!this.menuList.length) {
+          await this.getMenuAll()
+        }
         this.dataRow = row
         // 查询角色已有菜单
-        this.api.role.getRoleMenuKeys({role_id: this.dataRow.id}).then(res => {
+        this.api.role.getRoleMenuKeys({role_id: row.id}).then(res => {
           if (res && res.code === 0) {
             const arr = []
             for (let i = 0; i < res.data.length; i++) {
@@ -405,15 +412,19 @@
         })
       },
       // 打开菜单管理对话框
-      menuSortButton() {
-        this.sortList = [...this.menuList]
-
-        for (let i = 0; i < this.sortList.length; i++) {
-          this.sortList[i].up = false
-          this.sortList[i].down = false
+      async menuSortButton() {
+        if (!this.menuList.length) {
+          await this.getMenuAll()
         }
-        this.sortList[0].up = true
-        this.sortList[this.sortList.length - 1].down = true
+        this.sortList = [...this.menuList]
+        if (this.sortList.length) {
+          for (let i = 0; i < this.sortList.length; i++) {
+            this.sortList[i].up = false
+            this.sortList[i].down = false
+          }
+          this.sortList[0].up = true
+          this.sortList[this.sortList.length - 1].down = true
+        }
         this.dialog.menuSortDialog = true
       },
       // 菜单排序
@@ -471,17 +482,9 @@
     margin-top: 20px;
   }
 
-  .el-checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    .el-checkbox {
-      margin-left: 0;
-      margin-right: 20px;
-    }
-  }
-
   .access-list {
     display: flex;
+
     .item-all {
       margin-right: 20px;
     }

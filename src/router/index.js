@@ -9,9 +9,9 @@ export default new Router({
     {path: '/', component: () => import('~/login')},
     {
       path: '/home', component: () => import('~/home'), children: [
-        {path: '/', redirect: {path: '/role'}},
-        {path: '/user', component: () => import('~/admin/user')},
-        {path: '/organization', component: () => import('~/admin/organization')},
+        {path: '/', redirect: {path: '/admin'}},
+        {path: '/admin', component: () => import('~/admin/admin')},
+        {path: '/group', component: () => import('~/admin/group')},
         {path: '/role', component: () => import('~/admin/role')},
       ],
     },

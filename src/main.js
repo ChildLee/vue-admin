@@ -32,6 +32,8 @@ import {
   Submenu,
   Table,
   TableColumn,
+  Tag,
+  Transfer,
   Tree,
 } from 'element-ui'
 
@@ -70,6 +72,8 @@ Vue.use(Row)
 Vue.use(Submenu)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Tag)
+Vue.use(Transfer)
 Vue.use(Tree)
 
 new Vue({

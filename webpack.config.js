@@ -10,28 +10,28 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const miniCssLoader = {
   loader: MiniCssExtractPlugin.loader,
   options: {
-    publicPath: '../../'
-  }
+    publicPath: '../../',
+  },
 }
 
 const sassLoader = {
   loader: 'sass-loader',
   options: {
-    implementation: sass
-  }
+    implementation: sass,
+  },
 }
 
 module.exports = {
   // 环境
   mode: process.env.mode,
   entry: {
-    main: resolve('src', 'main.js')
+    main: resolve('src', 'main.js'),
     // main: ['@babel/polyfill', resolve('src', 'main.js')]//IE
   },
   output: {
     // publicPath: '',
     path: resolve('dist'),
-    filename: join('js', '[name].[chunkhash].js')
+    filename: join('js', '[name].[chunkhash].js'),
   },
   resolve: {
     // 引入文件可以不指定的扩展名
@@ -40,51 +40,51 @@ module.exports = {
     alias: {
       // 'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      '~': resolve('src', 'pages')
-    }
+      '~': resolve('src', 'pages'),
+    },
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
       },
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
       },
       {
         test: /\.css$/,
-        loader: [miniCssLoader, 'css-loader', 'postcss-loader']
+        loader: [miniCssLoader, 'css-loader', 'postcss-loader'],
       }, {
         test: /\.scss$/,
-        loader: [miniCssLoader, 'css-loader', 'postcss-loader', sassLoader]
+        loader: [miniCssLoader, 'css-loader', 'postcss-loader', sassLoader],
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10240, // 小于limit字节转为base64，大于则进行copy
-          name: join('img', '[name].[hash:8].[ext]')
-        }
+          name: join('img', '[name].[hash:8].[ext]'),
+        },
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10240, // 小于limit字节转为base64，大于则进行copy
-          name: join('media', '[name].[hash:8].[ext]')
-        }
+          name: join('media', '[name].[hash:8].[ext]'),
+        },
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10240, // 小于limit字节转为base64，大于则进行copy
-          name: join('fonts', '[name].[hash:8].[ext]')
-        }
-      }
-    ]
+          name: join('fonts', '[name].[hash:8].[ext]'),
+        },
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin('dist'),// 打包前删除dist目录
@@ -94,12 +94,12 @@ module.exports = {
       minify: {
         removeComments: true,//删除注释
         collapseWhitespace: true,//删除空格
-        removeAttributeQuotes: true//尽可能删除属性周围的引号
-      }
+        removeAttributeQuotes: true,//尽可能删除属性周围的引号
+      },
     }),// 引用js\css到模板文件
     new CompressionWebpackPlugin({threshold: 1024}),// 文件大于1K则压缩成gzip
     new MiniCssExtractPlugin({filename: join('css', '[name].[contenthash].css')}),// 抽离css样式
-    new CopyWebpackPlugin([{from: resolve('static'), to: 'static', ignore: ['.*']}])
+    new CopyWebpackPlugin([{from: resolve('static'), to: 'static', ignore: ['.*']}]),
   ],
   optimization: {
     // 是否压缩js代码
@@ -107,14 +107,14 @@ module.exports = {
     //拆分模块
     splitChunks: {
       chunks: 'all',
-      name: 'commons'
-    }
+      name: 'commons',
+    },
   },
   stats: {
     colors: true,
     modules: false,
     children: false,
-    warnings: false
+    warnings: false,
   },
   // webpack-dev-server配置
   devServer: {
@@ -127,9 +127,9 @@ module.exports = {
     // 端口
     port: 9999,
     proxy: {
-      '/': 'http://127.0.0.1:3000'
-    }
-  }
+      '/': 'http://127.0.0.1:3000',
+    },
+  },
 }
 
 function resolve(...dir) {

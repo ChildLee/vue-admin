@@ -144,8 +144,10 @@
     /*侧边栏菜单*/
     .el-aside {
       width: auto !important;
+
       .el-menu {
         height: 100%;
+
         &:not(.el-menu--collapse) {
           width: 250px;
         }
@@ -158,11 +160,13 @@
       justify-content: space-between;
       align-items: center;
       background-color: #545c64;
+
       .menu-btn {
         color: #fff;
         cursor: pointer;
         font-size: 30px;
       }
+
       .el-dropdown {
         color: #fff;
         cursor: pointer;

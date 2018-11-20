@@ -109,6 +109,7 @@
     width: 100%;
     height: 100%;
     background-image: url(../assets/login-bg.png);
+
     .login-form {
       box-sizing: border-box;
       width: 400px;
@@ -121,12 +122,15 @@
       left: 50%;
       margin-top: -250px;
       margin-left: -200px;
+
       .login-center {
         text-align: center;
       }
+
       .login-captcha {
         display: flex;
         align-items: center;
+
         .captcha {
           cursor: pointer;
           height: 40px;

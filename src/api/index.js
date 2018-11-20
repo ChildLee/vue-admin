@@ -1,13 +1,14 @@
+import axios from 'axios'
+import {Loading, Message} from 'element-ui'
 import store from '../store/index'
 import router from '../router/index'
-import axios from 'axios'
+import {admin} from './admin'
 import {menu} from './menu'
-import {organization} from './organization'
+import {group} from './group'
 import {role} from './role'
 import {user} from './user'
-import {Loading, Message} from 'element-ui'
 
-// axios.defaults.baseURL = 'http://127.0.0.1:3000' // webpack设置代理
+// axios.defaults.baseURL = 'http://127.0.0.1:3000' // webpack可以设置代理
 
 // 加载动画
 let loading = null
@@ -49,5 +50,5 @@ axios.interceptors.response.use(
 )
 
 export default {
-  menu, organization, role, user,
+  admin, menu, group, role, user,
 }

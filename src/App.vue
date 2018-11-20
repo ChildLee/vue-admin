@@ -19,6 +19,30 @@
     min-width: 1200px;
   }
 
+  .el-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+
+    .el-checkbox {
+      margin-left: 0;
+      margin-right: 20px;
+    }
+  }
+
+  .el-transfer {
+    .el-input {
+      width: auto;
+    }
+
+    .el-checkbox-group {
+      display: block;
+
+      .el-checkbox {
+        display: block;
+      }
+    }
+  }
+
   /* 隐藏滚动条(IE无效) */
   ::-webkit-scrollbar {
     display: none;
