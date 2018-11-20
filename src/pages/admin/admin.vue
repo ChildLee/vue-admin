@@ -5,7 +5,7 @@
 
     <el-table :data="list">
       <el-table-column align="center" type="index" width="50"></el-table-column>
-      <el-table-column align="center" prop="name" label="昵称"></el-table-column>
+      <el-table-column align="center" prop="name" label="名称"></el-table-column>
       <el-table-column align="center" prop="username" label="账号"></el-table-column>
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope" v-if="scope.row.id!==1">
@@ -41,8 +41,8 @@
                :before-close="done=>resetForm('addForm',done)"
                :visible.sync="dialog.addShow">
       <el-form ref="addForm" :model="dataForm" :rules="rules" label-position="left" label-width="80px">
-        <el-form-item label="昵称" prop="name">
-          <el-input maxlength="50" placeholder="请输入昵称" v-model="dataForm.name"></el-input>
+        <el-form-item label="名称" prop="name">
+          <el-input maxlength="50" placeholder="请输入名称" v-model="dataForm.name"></el-input>
         </el-form-item>
         <el-form-item label="账号" prop="username">
           <el-input maxlength="50" placeholder="请输入账号" v-model="dataForm.username"></el-input>
@@ -66,11 +66,11 @@
                :visible.sync="dialog.updateShow">
       <el-form ref="updateForm" :model="dataForm" :rules="rules" label-position="left"
                label-width="80px">
-        <el-form-item label="昵称" prop="name">
-          <el-input maxlength="50" placeholder="请输入昵称" v-model="dataForm.name"></el-input>
+        <el-form-item label="名称" prop="name">
+          <el-input maxlength="50" placeholder="请输入名称" v-model="dataForm.name"></el-input>
         </el-form-item>
         <el-form-item label="账号" prop="username">
-          <el-input maxlength="50" placeholder="请输入昵称" v-model="dataForm.username"></el-input>
+          <el-input maxlength="50" placeholder="请输入账号" v-model="dataForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input maxlength="50" placeholder="请输入密码" v-model="dataForm.password" type="password"></el-input>
@@ -146,7 +146,7 @@
         },
         // 表单验证
         rules: {
-          name: [{required: true, message: '请输入昵称'}],
+          name: [{required: true, message: '请输入名称'}],
           username: [{required: true, message: '请输入账号'}],
           password: [{required: true, message: '请输入密码'}],
           rePassword: [{required: true, message: '请再次输入密码'}],
