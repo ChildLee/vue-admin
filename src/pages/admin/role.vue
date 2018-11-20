@@ -104,12 +104,12 @@
     <!--菜单管理-->
     <el-dialog title="菜单管理" width="600px" center :visible.sync="dialog.menuSortDialog">
       <el-table :data="sortList" border>
-        <el-table-column align="center" prop="name" label="图标" width="150">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.icon"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="name" label="菜单" width="200"></el-table-column>
+        <!--<el-table-column align="center" prop="name" label="图标" width="150">-->
+        <!--<template slot-scope="scope">-->
+        <!--<el-input v-model="scope.row.icon"></el-input>-->
+        <!--</template>-->
+        <!--</el-table-column>-->
+        <el-table-column align="center" prop="name" label="菜单"></el-table-column>
         <el-table-column align="center" label="排序">
           <template slot-scope="scope">
             <el-button :disabled="scope.row.up" icon="el-icon-arrow-up" circle

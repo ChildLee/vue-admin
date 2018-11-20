@@ -98,7 +98,7 @@
     </el-dialog>
 
     <!--编辑角色对话框-->
-    <el-dialog title="编辑组织" width="650px" center :visible.sync="dialog.addRoleShow">
+    <el-dialog title="编辑角色" width="650px" center :visible.sync="dialog.addRoleShow">
       <div class="transfer-center">
         <el-transfer :data="transferRoleData" v-model="selectedTransferData" filterable
                      :titles="['未选','已选']" :props="{key:'id',label:'name'}"></el-transfer>
@@ -149,7 +149,7 @@
           name: [{required: true, message: '请输入昵称'}],
           username: [{required: true, message: '请输入账号'}],
           password: [{required: true, message: '请输入密码'}],
-          rePassword: [{required: true, message: '请输入密码'}],
+          rePassword: [{required: true, message: '请再次输入密码'}],
         },
         page: 0,
         limit: 10,
@@ -295,7 +295,6 @@
       },
       // 保存组织
       saveAdminGroups() {
-        console.log(this.selectedTransferData)
         this.api.admin.saveAdminGroups({
           admin_id: this.dataRow.id,
           groups: this.selectedTransferData,

@@ -6,7 +6,7 @@ import {admin} from './admin'
 import {menu} from './menu'
 import {group} from './group'
 import {role} from './role'
-import {user} from './user'
+import {login} from './login'
 
 // axios.defaults.baseURL = 'http://127.0.0.1:3000' // webpack可以设置代理
 
@@ -50,5 +50,5 @@ axios.interceptors.response.use(
 )
 
 export default {
-  admin, menu, group, role, user,
+  admin, group, login, menu, role,
 }

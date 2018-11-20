@@ -65,7 +65,7 @@
       },
       // 获取验证码
       getCaptcha(formName) {
-        return this.api.user.captcha({key: this.loginForm.key}).then(res => {
+        return this.api.login.captcha({key: this.loginForm.key}).then(res => {
           if (res && res.code === 0) {
             this.loginForm.key = res.data.key
             this.captcha = res.data.data
@@ -81,7 +81,7 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.api.user.login(this.loginForm).then(res => {
+            this.api.login.login(this.loginForm).then(res => {
               if (res && res.code === 0) {
                 this.$store.commit('setUserId', res.data.id)
                 this.$store.commit('setToken', res.data.token)

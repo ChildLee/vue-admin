@@ -19,7 +19,7 @@
 
               <!--主菜单名-->
               <template slot="title">
-                <i class="" :class="item.icon"></i>
+                <i class="icon" :class="item.icon"></i>
                 <span slot="title">{{item.name}}</span>
               </template>
 
@@ -52,7 +52,7 @@
           <!--主菜单无子项-->
           <template v-else>
             <el-menu-item :index="String(item.url)">
-              <i class="" :class="item.icon"></i>
+              <i class="icon" :class="item.icon"></i>
               <span slot="title">{{item.name}}</span>
             </el-menu-item>
           </template>
@@ -74,6 +74,7 @@
             <i class="el-icon-setting"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="updatePasswordDialog=true">修改密码</el-dropdown-item>
             <el-dropdown-item @click.native="sign_out">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -86,6 +87,27 @@
 
     </el-container>
 
+    <!--修改密码对话框-->
+    <el-dialog title="修改密码" width="500px" center
+               :before-close="done=>resetForm('updateForm',done)"
+               :visible.sync="updatePasswordDialog">
+      <el-form ref="updateForm" :model="dataForm" :rules="rules" label-position="left" label-width="80px">
+        <el-form-item label="原密码" prop="rawPassword">
+          <el-input maxlength="50" placeholder="请输入原密码" v-model="dataForm.rawPassword" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input maxlength="50" placeholder="请输入新密码" v-model="dataForm.newPassword" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="rePassword">
+          <el-input maxlength="50" placeholder="请再次输入密码" v-model="dataForm.rePassword" type="password"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="resetForm('updateForm')">取 消</el-button>
+        <el-button type="primary" @click="updatePassword('updateForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </el-container>
 </template>
 
@@ -97,9 +119,23 @@
         // 当前路由
         currentRoute: '',
         // 菜单列表
-        menuList: [{menus: []}],
+        menuList: [],
         // 是否折叠菜单
         isCollapse: false,
+        // 修改密码对话框
+        updatePasswordDialog: false,
+        // 表单
+        dataForm: {
+          rawPassword: '',
+          newPassword: '',
+          rePassword: '',
+        },
+        // 表单验证
+        rules: {
+          rawPassword: [{required: true, message: '请输入原密码'}],
+          newPassword: [{required: true, message: '请输入新密码'}],
+          rePassword: [{required: true, message: '请再次输入密码'}],
+        },
       }
     },
     watch: {
@@ -126,13 +162,46 @@
       },
       // 退出登录
       sign_out() {
-        this.api.user.sign_out().then(res => {
+        this.api.login.sign_out().then(res => {
           if (res && res.code === 0) {
             this.$store.commit('setUserId', null)
             this.$store.commit('setToken', null)
             this.$router.push({path: '/'})
           }
         })
+      },
+      // 修改密码
+      updatePassword(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            const newPassword = this.dataForm.newPassword
+            const rePassword = this.dataForm.rePassword
+            if (newPassword !== rePassword) return this.$message({message: `两次输入的密码不一致`, type: 'error'})
+
+            this.api.login.updatePassword({
+              id: this.$store.getters.getUserId,
+              rawPassword: this.dataForm.rawPassword,
+              newPassword: this.dataForm.newPassword,
+            }).then(res => {
+              if (res && res.code === 0) {
+                this.updatePasswordDialog = false
+                this.$refs[formName].resetFields()
+                this.dataForm = {}
+                this.$store.commit('setUserId', null)
+                this.$store.commit('setToken', null)
+                this.$router.push({path: '/'})
+                this.$message({message: '密码修改成功,请重新登录!', type: 'success'})
+              }
+            })
+          }
+        })
+      },
+      // 重置表单
+      resetForm(formName, done) {
+        if (done) done()
+        this.updatePasswordDialog = false
+        this.$refs[formName].resetFields()
+        this.dataForm = {}
       },
     },
   }
